@@ -1,0 +1,19 @@
+{
+  "name": "timelapse_factory",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DanEdens/timelapse_factory.git"
+  },
+  "author": "DanEdens",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DanEdens/timelapse_factory/issues"
+  },
+  "homepage": "https://github.com/DanEdens/timelapse_factory#readme"
+}
