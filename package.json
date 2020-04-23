@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/DanEdens/timelapse_factory/issues"
   },
-  "homepage": "https://github.com/DanEdens/timelapse_factory#readme"
+  "homepage": "https://github.com/DanEdens/timelapse_factory#readme",
+  "dependencies": {
+    "bluebird": "3.7.2",
+    "puppeteer": "3.0.0",
+    "readline": "1.3.0"
+  }
 }

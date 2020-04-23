@@ -3,13 +3,15 @@ const puppeteer = require('puppeteer');
   const browser = await puppeteer.launch({headless: false})
   const page = await browser.newPage()
   
-  const navigationPromise = page.waitForNavigation()
+  const navigationPromise = page.waitForNavigation();
   
   await page.goto('https://quickview.geo-instruments.com/login.php')
   
   await page.setViewport({ width: 1943, height: 874 })
   
   // creds assumed autofilled
+  await page.type('#user', CREDS.qvuser);
+  await page.type('#pass', CREDS.qvpass);
   await page.waitForSelector('.main-panel > .content > #login > form > .btn')
   await page.click('.main-panel > .content > #login > form > .btn')
   
