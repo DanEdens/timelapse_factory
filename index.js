@@ -13,12 +13,7 @@ const browser = await puppeteer.launch({
     executablePath: "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
     userDataDir: "C:\\Users\\Dan.Edens\\AppData\\Local\\Google\\Chrome\\User Data"
 });
-//    prefs = userdata+"\\Default\\Preferences"
-//    chrome_args = ['--start-fullscreen',  "--ignore-certificate-errors", url,
-//                   "--restore-last-session"]
-// launch(
-//        {"headless": Options.headless, "executablePath": Options.exe_path,
-//        "userDataDir": Options.userdata}, args=Options.chrome_args)
+// await fs.promises.mkdir(usercheckpath, { recursive: true });
 const page = await browser.newPage();
 await page.setViewport({width: 1960, height: 960, deviceScaleFactor: 1});
 await page.goto('https://quickview.geo-instruments.com/index.php');
@@ -28,17 +23,40 @@ process.stdin.on('keypress', async (str, key) => {
     await browser.close();
     process.exit();
   }
+  // process.stdin.resume();
+//
+// // i don't want binary, do you?
+// static async askQuestion(query) {
+//     const rl = readline.createInterface({
+//         input: process.stdin,
+//         output: process.stdout,
+//     });
+//     return new Promise(resolve => rl.question(query, ans => {
+//         rl.close();
+//         verboselog(ans);
+//         resolve(ans);
+//     }))
+// }
 
+  process.stdin.setEncoding( 'utf8' );
+  process.stdin.on( 'data', function( key ){
+      // ctrl-c ( end of text )
+      if ( key === '\u0003' ) {
+          process.exit();
+      }
+      // write the key to stdout all normal like
+      console.log( key );
+    });
   if (['minus'].includes(key.name)) {
       await getUserInput(browser,page,'Start Date: \n');
       console.log('Prompting for Start date');
-    }
+  }
   if (['equals'].includes(key.name)) {
       await getUserInput(browser,page,'Start Date: \n');
       console.log('Prompting for End date');
   }
 
-  if (['up', 'down', 'left', 'right', 'enter'].includes(key.name)) {
+  if (['up', 'down', 'left', 'right'].includes(key.name)) {
   const capitalized = key.name[0].toUpperCase() + key.name.slice(1);
   const keyName = `Arrow${capitalized}`;
   console.log(`page.keyboard.down('${keyName}')`);
