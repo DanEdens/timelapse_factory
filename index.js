@@ -9,17 +9,15 @@ const fs = require('fs');
 const browser = await puppeteer.launch({
     headless: false,
     args: [],
+    timeout: 0,
     executablePath: "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
     userDataDir: "C:\\Users\\Dan.Edens\\AppData\\Local\\Google\\Chrome\\User Data"
 });
-//    exe_path = os.environ['ProgramFiles(x86)']+'\\Google\\Chrome\\Application\\chrome.exe'
-//    userdata = os.environ['USERPROFILE']+"\\AppData\\Local\\Google\\Chrome\\User Data"
 //    prefs = userdata+"\\Default\\Preferences"
-//    headless = False
-//    chrome_args = ['--start-fullscreen', ' --user-data-dir='+userdata, "--ignore-certificate-errors", url,
+//    chrome_args = ['--start-fullscreen',  "--ignore-certificate-errors", url,
 //                   "--restore-last-session"]
 // launch(
-//        {"headless": Options.headless, "timeout": 0, "executablePath": Options.exe_path,
+//        {"headless": Options.headless, "executablePath": Options.exe_path,
 //        "userDataDir": Options.userdata}, args=Options.chrome_args)
 const page = await browser.newPage();
 await page.setViewport({width: 1960, height: 960, deviceScaleFactor: 1});
