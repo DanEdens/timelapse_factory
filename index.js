@@ -10,7 +10,7 @@ const CREDS = require(__dirname + '/user/creds.js');
 
     // console.log(wargs);
 
-    function toDate(date){
+    function toDate(date) {
         await page.waitForSelector('#dialogSAA3Phase\ 5 > #formInner32 > .graphButtons > div > .graphButton:nth-child(1)')
         await page.click('#dialogSAA3Phase\ 5 > #formInner32 > .graphButtons > div > .graphButton:nth-child(1)')
 
@@ -30,19 +30,19 @@ const CREDS = require(__dirname + '/user/creds.js');
         await page.click('#link1 #sDateTxt')
     };
 
-        function fromDate(){
-            await page.waitFor(4000);
-            await page.waitForSelector('#dateList1Container > #dateList1 > #dateList1Body > tr:nth-child(1) > .text-center')
-            await page.click('#dateList1Container > #dateList1 > #dateList1Body > tr:nth-child(1) > .text-center')
+    function fromDate() {
+        await page.waitFor(4000);
+        await page.waitForSelector('#dateList1Container > #dateList1 > #dateList1Body > tr:nth-child(1) > .text-center')
+        await page.click('#dateList1Container > #dateList1 > #dateList1Body > tr:nth-child(1) > .text-center')
 
-            await page.waitForSelector('#link1 > .row > .col-sm > #moveRightBtn > .tim-icons')
-            await page.click('#link1 > .row > .col-sm > #moveRightBtn > .tim-icons')
+        await page.waitForSelector('#link1 > .row > .col-sm > #moveRightBtn > .tim-icons')
+        await page.click('#link1 > .row > .col-sm > #moveRightBtn > .tim-icons')
 
-            await page.waitForSelector('#dialogDateSelector > #formInner37 #btnApply')
-            await page.click('#dialogDateSelector > #formInner37 #btnApply')
+        await page.waitForSelector('#dialogDateSelector > #formInner37 #btnApply')
+        await page.click('#dialogDateSelector > #formInner37 #btnApply')
 
-            return;
-        };
+        return;
+    };
 
     function arrayRemove(arr, value) {
         return arr.filter(function (ele) {
@@ -70,8 +70,14 @@ const CREDS = require(__dirname + '/user/creds.js');
     });
     // await fs.promises.mkdir('./data/screenshots', { recursive: true });
     const page = await browser.newPage();
-    await page.setViewport({width: 1920, height: 1080, deviceScaleFactor: .6}); //
-    await page.goto('https://quickview.geo-instruments.com/index.php', {waitUntil: 'domcontentloaded'});
+    await page.setViewport({
+        width: 1920,
+        height: 1080,
+        deviceScaleFactor: .6
+    }); //
+    await page.goto('https://quickview.geo-instruments.com/index.php', {
+        waitUntil: 'domcontentloaded'
+    });
     await page.setDefaultNavigationTimeout(0);
     const navigationPromise = page.waitForNavigation();
     const dimensions = await page.evaluate(() => {
@@ -84,17 +90,19 @@ const CREDS = require(__dirname + '/user/creds.js');
 
     console.log('Dimensions:', dimensions);
     // await navigationPromise;
-    try {
-        await page.type('#user', CREDS.qvuser);
-        await page.type('#pass', CREDS.qvpass);
-        await page.waitForSelector('.main-panel > .content > #login > form > .btn')
-        await page.click('.main-panel > .content > #login > form > .btn')
-    } catch (error) {
-        console.log('Caught:', error.message)
-    }
+    async function logIn(browser, page) {
+        try {
+            await page.type('#user', CREDS.qvuser);
+            await page.type('#pass', CREDS.qvpass);
+            await page.waitForSelector('.main-panel > .content > #login > form > .btn')
+            await page.click('.main-panel > .content > #login > form > .btn')
+        } catch (error) {
+            console.log('Caught:', error.message)
+        }
+    };
 
     // Navigate to Plot
-    async function navtoPlot(browser,page){
+    async function navtoPlot(browser, page) {
         await page.waitFor(1000)
         await page.waitForSelector('.sidebar-wrapper > .nav > #menuProjects > a > p')
         await page.click('.sidebar-wrapper > .nav > #menuProjects > a > p')
@@ -113,7 +121,7 @@ const CREDS = require(__dirname + '/user/creds.js');
     };
 
     // clear default dates
-    async function clearDates(browser,page){
+    async function clearDates(browser, page) {
         await page.waitFor(1000)
         await page.waitForSelector('#formInner0 > div.graphButtons > div > div:nth-child(1)')
         await page.click('#formInner0 > .graphButtons > div > .graphButton:nth-child(1)')
@@ -128,8 +136,8 @@ const CREDS = require(__dirname + '/user/creds.js');
         await elements[0].click()
     };
 
-    async function typeDate(browser,page){
-    // Add new date
+    async function typeDate(browser, page) {
+        // Add new date
         await page.waitForSelector('#link1 #sDateTxt')
         await page.click('#link1 #sDateTxt')
         //await page.keyboard.type(targetdate)
@@ -252,18 +260,18 @@ const CREDS = require(__dirname + '/user/creds.js');
             process.exit();
         }
         // process.stdin.resume();
-//
-// static async askQuestion(query) {
-//     const rl = readline.createInterface({
-//         input: process.stdin,
-//         output: process.stdout,
-//     });
-//     return new Promise(resolve => rl.question(query, ans => {
-//         rl.close();
-//         verboselog(ans);
-//         resolve(ans);
-//     }))
-// }
+        //
+        // static async askQuestion(query) {
+        //     const rl = readline.createInterface({
+        //         input: process.stdin,
+        //         output: process.stdout,
+        //     });
+        //     return new Promise(resolve => rl.question(query, ans => {
+        //         rl.close();
+        //         verboselog(ans);
+        //         resolve(ans);
+        //     }))
+        // }
 
         process.stdin.setEncoding('utf8');
         process.stdin.on('data', function (key) {
@@ -275,16 +283,16 @@ const CREDS = require(__dirname + '/user/creds.js');
             console.log(key);
         });
         if (['left'].includes(key.name)) {
-            await getUserInput(browser, page, 'Start Date: \n');
-            console.log('Prompting for Start date');
+            console.log('opening Date selector');
+            await toDate(browser, page);
         }
         if (['right'].includes(key.name)) {
-            await getUserInput(browser, page, 'Start Date: \n');
-            console.log('Prompting for End date');
+            console.log('manuvering for screenshot');
+            await fromDate(browser, page);
         }
         if (['up'].includes(key.name)) {
-            await getUserInput(browser, page, 'Start Date: \n');
-            console.log('Prompting for End date');
+            console.log('Input target');
+            let date = await getUserInput(browser, page, 'Start Date: \n');
         }
         if (['down'].includes(key.name)) {
             await getUserInput(browser, page, 'Start Date: \n');
@@ -297,6 +305,7 @@ const CREDS = require(__dirname + '/user/creds.js');
         //     await page.keyboard.down(keyName);
         // }
     });
+
 
     async function getUserInput(browser, page, value) {
 
@@ -320,8 +329,8 @@ const CREDS = require(__dirname + '/user/creds.js');
     }
 
 
-    readline.emitKeypressEvents(process.stdin);
-    process.stdin.setRawMode(true);
+    // readline.emitKeypressEvents(process.stdin);
+    // process.stdin.setRawMode(true);
 
 })();
 // records.filter(r => !r.title).map(r => ({…r, title: await getUserInput(r)}))
