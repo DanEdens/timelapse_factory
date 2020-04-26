@@ -10,6 +10,40 @@ const CREDS = require(__dirname + '/user/creds.js');
 
     // console.log(wargs);
 
+    function toDate(date){
+        await page.waitForSelector('#dialogSAA3Phase\ 5 > #formInner32 > .graphButtons > div > .graphButton:nth-child(1)')
+        await page.click('#dialogSAA3Phase\ 5 > #formInner32 > .graphButtons > div > .graphButton:nth-child(1)')
+
+        await page.waitForSelector('#dateList2Container > #dateList2 > #dateList2Body > tr > .text-center')
+        await page.click('#dateList2Container > #dateList2 > #dateList2Body > tr > .text-center')
+
+        await page.waitForSelector('.tab-content > #link1 #moveLeftBtn')
+        await page.click('.tab-content > #link1 #moveLeftBtn')
+
+        await page.waitForSelector('#dialogDelete > #formInner38 > form > .text-center > .form-group')
+        await page.click('#dialogDelete > #formInner38 > form > .text-center > .form-group')
+
+        await page.waitForSelector('#formInner38 #btnApply')
+        await page.click('#formInner38 #btnApply')
+
+        await page.waitForSelector('#link1 #sDateTxt')
+        await page.click('#link1 #sDateTxt')
+    };
+
+        function fromDate(){
+            await page.waitFor(4000);
+            await page.waitForSelector('#dateList1Container > #dateList1 > #dateList1Body > tr:nth-child(1) > .text-center')
+            await page.click('#dateList1Container > #dateList1 > #dateList1Body > tr:nth-child(1) > .text-center')
+
+            await page.waitForSelector('#link1 > .row > .col-sm > #moveRightBtn > .tim-icons')
+            await page.click('#link1 > .row > .col-sm > #moveRightBtn > .tim-icons')
+
+            await page.waitForSelector('#dialogDateSelector > #formInner37 #btnApply')
+            await page.click('#dialogDateSelector > #formInner37 #btnApply')
+
+            return;
+        };
+
     function arrayRemove(arr, value) {
         return arr.filter(function (ele) {
             return ele != value;
@@ -60,46 +94,52 @@ const CREDS = require(__dirname + '/user/creds.js');
     }
 
     // Navigate to Plot
+    async function navtoPlot(browser,page){
+        await page.waitFor(1000)
+        await page.waitForSelector('.sidebar-wrapper > .nav > #menuProjects > a > p')
+        await page.click('.sidebar-wrapper > .nav > #menuProjects > a > p')
 
-    await page.waitFor(1000)
-    await page.waitForSelector('.sidebar-wrapper > .nav > #menuProjects > a > p')
-    await page.click('.sidebar-wrapper > .nav > #menuProjects > a > p')
+        await page.hover('body > div.wrapper > div.sidePanel.ui-resizable > div.panelHeading')
+        await page.waitFor(1000)
+        await page.waitForSelector('.sidePanel > #panelInner > #projectList > .panelRow:nth-child(3) > .panelRowTxt2')
+        await page.click('.sidePanel > #panelInner > #projectList > .panelRow:nth-child(3) > .panelRowTxt2')
 
-    await page.hover('body > div.wrapper > div.sidePanel.ui-resizable > div.panelHeading')
-    await page.waitFor(1000)
-    await page.waitForSelector('.sidePanel > #panelInner > #projectList > .panelRow:nth-child(3) > .panelRowTxt2')
-    await page.click('.sidePanel > #panelInner > #projectList > .panelRow:nth-child(3) > .panelRowTxt2')
+        await page.waitFor(1000)
+        await page.waitForSelector('#objects > img:nth-child(1)')
+        await page.click('#objects > img:nth-child(1)')
 
-    await page.waitFor(1000)
-    await page.waitForSelector('#objects > img:nth-child(1)')
-    await page.click('#objects > img:nth-child(1)')
-
-    await page.waitForSelector('#viewGraphBtn')
-    await page.click('#viewGraphBtn')
+        await page.waitForSelector('#viewGraphBtn')
+        await page.click('#viewGraphBtn')
+    };
 
     // clear default dates
-    await page.waitFor(1000)
-    await page.waitForSelector('#formInner0 > div.graphButtons > div > div:nth-child(1)')
-    await page.click('#formInner0 > .graphButtons > div > .graphButton:nth-child(1)')
+    async function clearDates(browser,page){
+        await page.waitFor(1000)
+        await page.waitForSelector('#formInner0 > div.graphButtons > div > div:nth-child(1)')
+        await page.click('#formInner0 > .graphButtons > div > .graphButton:nth-child(1)')
 
-    await page.waitForSelector('form #list2 #selectAllBtn')
-    await page.click('form #list2 #selectAllBtn')
+        await page.waitForSelector('form #list2 #selectAllBtn')
+        await page.click('form #list2 #selectAllBtn')
 
-    await page.waitForSelector('form #deleteBtn')
-    await page.click('form #deleteBtn')
+        await page.waitForSelector('form #deleteBtn')
+        await page.click('form #deleteBtn')
 
-    const elements = await page.$x('/html/body/div[1]/div[5]/div[2]/form/div/div/button[2]')
-    await elements[0].click()
+        const elements = await page.$x('/html/body/div[1]/div[5]/div[2]/form/div/div/button[2]')
+        await elements[0].click()
+    };
 
+    async function typeDate(browser,page){
     // Add new date
-    await page.waitForSelector('#link1 #sDateTxt')
-    await page.click('#link1 #sDateTxt')
-    //await page.keyboard.type(targetdate)
-    await page.waitForSelector('#dateList1 > #dateList1Body > tr:nth-child(1) > td > .form-check')
-    await page.click('#dateList1 > #dateList1Body > tr:nth-child(1) > td > .form-check')
+        await page.waitForSelector('#link1 #sDateTxt')
+        await page.click('#link1 #sDateTxt')
+        //await page.keyboard.type(targetdate)
+        await page.waitForSelector('#dateList1 > #dateList1Body > tr:nth-child(1) > td > .form-check')
+        await page.click('#dateList1 > #dateList1Body > tr:nth-child(1) > td > .form-check')
 
-    await page.waitForSelector('#link1 > .row > .col-sm > #moveRightBtn > .tim-icons')
-    await page.click('#link1 > .row > .col-sm > #moveRightBtn > .tim-icons')
+        await page.waitForSelector('#link1 > .row > .col-sm > #moveRightBtn > .tim-icons')
+        await page.click('#link1 > .row > .col-sm > #moveRightBtn > .tim-icons')
+    };
+
 
     // await page.waitForSelector('#formInner20 > form:nth-child(1) > div:nth-child(2) > div:nth-child(1) > button:nth-child(2)')
     // await page.click('#formInner20 > form:nth-child(1) > div:nth-child(2) > div:nth-child(1) > button:nth-child(2)')
@@ -213,7 +253,6 @@ const CREDS = require(__dirname + '/user/creds.js');
         }
         // process.stdin.resume();
 //
-// // i don't want binary, do you?
 // static async askQuestion(query) {
 //     const rl = readline.createInterface({
 //         input: process.stdin,
@@ -235,21 +274,28 @@ const CREDS = require(__dirname + '/user/creds.js');
             // write the key to stdout all normal like
             console.log(key);
         });
-        if (['minus'].includes(key.name)) {
+        if (['left'].includes(key.name)) {
             await getUserInput(browser, page, 'Start Date: \n');
             console.log('Prompting for Start date');
         }
-        if (['equals'].includes(key.name)) {
+        if (['right'].includes(key.name)) {
             await getUserInput(browser, page, 'Start Date: \n');
             console.log('Prompting for End date');
         }
-
-        if (['up', 'down', 'left', 'right'].includes(key.name)) {
-            const capitalized = key.name[0].toUpperCase() + key.name.slice(1);
-            const keyName = `Arrow${capitalized}`;
-            console.log(`page.keyboard.down('${keyName}')`);
-            await page.keyboard.down(keyName);
+        if (['up'].includes(key.name)) {
+            await getUserInput(browser, page, 'Start Date: \n');
+            console.log('Prompting for End date');
         }
+        if (['down'].includes(key.name)) {
+            await getUserInput(browser, page, 'Start Date: \n');
+            console.log('Prompting for End date');
+        }
+        // if (['up', 'down', 'left', 'right'].includes(key.name)) {
+        //     const capitalized = key.name[0].toUpperCase() + key.name.slice(1);
+        //     const keyName = `Arrow${capitalized}`;
+        //     console.log(`page.keyboard.down('${keyName}')`);
+        //     await page.keyboard.down(keyName);
+        // }
     });
 
     async function getUserInput(browser, page, value) {

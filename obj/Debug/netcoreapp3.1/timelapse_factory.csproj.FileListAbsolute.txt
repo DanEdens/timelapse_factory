@@ -1,0 +1,11 @@
+C:\Users\Dan.Edens\Desktop\Tree\the_lab\NodeJS\timelapse_factory\bin\Debug\netcoreapp3.1\timelapse_factory.exe
+C:\Users\Dan.Edens\Desktop\Tree\the_lab\NodeJS\timelapse_factory\bin\Debug\netcoreapp3.1\timelapse_factory.deps.json
+C:\Users\Dan.Edens\Desktop\Tree\the_lab\NodeJS\timelapse_factory\bin\Debug\netcoreapp3.1\timelapse_factory.runtimeconfig.json
+C:\Users\Dan.Edens\Desktop\Tree\the_lab\NodeJS\timelapse_factory\bin\Debug\netcoreapp3.1\timelapse_factory.runtimeconfig.dev.json
+C:\Users\Dan.Edens\Desktop\Tree\the_lab\NodeJS\timelapse_factory\bin\Debug\netcoreapp3.1\timelapse_factory.dll
+C:\Users\Dan.Edens\Desktop\Tree\the_lab\NodeJS\timelapse_factory\bin\Debug\netcoreapp3.1\timelapse_factory.pdb
+C:\Users\Dan.Edens\Desktop\Tree\the_lab\NodeJS\timelapse_factory\obj\Debug\netcoreapp3.1\timelapse_factory.csprojAssemblyReference.cache
+C:\Users\Dan.Edens\Desktop\Tree\the_lab\NodeJS\timelapse_factory\obj\Debug\netcoreapp3.1\timelapse_factory.AssemblyInfoInputs.cache
+C:\Users\Dan.Edens\Desktop\Tree\the_lab\NodeJS\timelapse_factory\obj\Debug\netcoreapp3.1\timelapse_factory.AssemblyInfo.cs
+C:\Users\Dan.Edens\Desktop\Tree\the_lab\NodeJS\timelapse_factory\obj\Debug\netcoreapp3.1\timelapse_factory.dll
+C:\Users\Dan.Edens\Desktop\Tree\the_lab\NodeJS\timelapse_factory\obj\Debug\netcoreapp3.1\timelapse_factory.pdb
