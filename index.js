@@ -77,7 +77,10 @@ const CREDS = require(__dirname + '/user/creds.js');
 
     }
 
-    async function OpenPlot(browser, page) {
+
+    async function ViewGraph(browser, page) {
+        //Preform this function during Raw Input Interactive browser session
+        //Input Key:
         await page.waitFor(1000)
         await page.waitForSelector('#objects > img:nth-child(1)')
         await page.click('#objects > img:nth-child(1)')
@@ -206,31 +209,6 @@ const CREDS = require(__dirname + '/user/creds.js');
             await browser.close();
             process.exit();
         }
-        if (['left'].includes(key.name)) {
-            console.log('opening Date selector');
-            try {
-                await ChangeDate(browser, page);
-            } catch (error) {
-                console.log('Caught:', error.message)
-            }
-        }
-            console.log('opening Date selector');
-        if (['left'].includes(key.name)) {
-            console.log('opening Date selector');
-            try {
-                await ChangeDate(browser, page);
-            } catch (error) {
-                console.log('Caught:', error.message)
-            }
-        }
-        if (['right'].includes(key.name)) {
-            console.log('manuvering for screenshot');
-            try {
-                await fromDate(browser, page);
-            } catch (error) {
-                console.log('Caught:', error.message)
-            }
-        }
         if (['up'].includes(key.name)) {
             console.log('Input Date');
             try {
@@ -243,6 +221,22 @@ const CREDS = require(__dirname + '/user/creds.js');
             console.log('Prompting for End date');
             try {
                 console.log('empty function')
+            } catch (error) {
+                console.log('Caught:', error.message)
+            }
+        }
+        if (['left'].includes(key.name)) {
+            console.log('opening Date selector');
+            try {
+                await ChangeDate(browser, page);
+            } catch (error) {
+                console.log('Caught:', error.message)
+            }
+        }
+        if (['right'].includes(key.name)) {
+            console.log('manuvering for screenshot');
+            try {
+                await fromDate(browser, page);
             } catch (error) {
                 console.log('Caught:', error.message)
             }
@@ -281,6 +275,13 @@ const CREDS = require(__dirname + '/user/creds.js');
         if (['t'].includes(key.name)) {
             try {
                 await TypeDate(browser, page);
+            } catch (error) {
+                console.log('Caught:', error.message)
+            }
+        }
+        if (['g'].includes(key.name)) {
+            try {
+                await ViewGraph(browser, page);
             } catch (error) {
                 console.log('Caught:', error.message)
             }
