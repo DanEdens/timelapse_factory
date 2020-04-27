@@ -99,6 +99,7 @@ const text = require(__dirname + '/data/text.js');
         await page.waitForSelector('form #deleteBtn')
         await page.click('form #deleteBtn')
 
+        await page.waitFor(2000)
         const elements = await page.$x('/html/body/div[1]/div[5]/div[2]/form/div/div/button[2]')
         await elements[0].click()
     }
@@ -112,18 +113,20 @@ const text = require(__dirname + '/data/text.js');
         await page.keyboard.up('A')
         await page.keyboard.up('Control')
 
+        await page.waitFor(1000)
         await page.type('#sDateTxt', date)
         await page.keyboard.press("Enter");
 
-        await page.waitFor(1000)
         await page.waitForSelector('#dateList1Body > tr:nth-child(1) > td.text-center')
+        await page.waitFor(1000)
         await page.click('#dateList1Body > tr:nth-child(1) > td.text-center')
 
-        await page.waitFor(1000)
         await page.waitForSelector('#moveRightBtn > i')
+        await page.waitFor(1000)
         await page.click('#moveRightBtn > i')
 
         await page.waitForSelector('#btnApply')
+        await page.waitFor(1000)
         await page.click('#btnApply')
     }
 
@@ -159,9 +162,9 @@ const text = require(__dirname + '/data/text.js');
         await page.click('#dialogDateSelector > #formInner37 #btnApply')
     }
 
-    async function TurnOnRaw(browser, page) {process.stdin.setRawMode(true);}
+    async function TurnOnRaw() {process.stdin.setRawMode(true);}
 
-    async function TurnOffRaw(browser,page) {process.stdin.setRawMode(false);}
+    async function TurnOffRaw() {process.stdin.setRawMode(false)}
 
     async function UserInputDialog(browser, page, value) {
         return new Promise(async (resolve) => {
@@ -196,8 +199,8 @@ const text = require(__dirname + '/data/text.js');
         if (['p'].includes(key.name))     {console.log('ChangeProject');try {await ChangeProject(browser, page);} catch (error) {console.log('Caught:', error.message)}}
         if (['c'].includes(key.name))     {console.log('ClearDates');try {await ClearDates(browser, page);} catch (error) {console.log('Caught:', error.message)}}
         if (['g'].includes(key.name))     {console.log('ViewGraph');try {await ViewGraph(browser, page);} catch (error) {console.log('Caught:', error.message)}}
-        if (['r'].includes(key.name))     {console.log('TurnOnRaw');try {await TurnOnRaw(browser, page);} catch (error) {console.log('Caught:', error.message)}}
-        if (['t'].includes(key.name))     {console.log('TurnOffRaw');try {await TurnOffRaw(browser, page);} catch (error) {console.log('Caught:', error.message)}}
+        if (['r'].includes(key.name))     {console.log('TurnOnRaw');try {await TurnOnRaw();} catch (error) {console.log('Caught:', error.message)}}
+        if (['t'].includes(key.name))     {console.log('TurnOffRaw');try {await TurnOffRaw();} catch (error) {console.log('Caught:', error.message)}}
     }); // @formatter:on
     readline.emitKeypressEvents(process.stdin);
     process.stdin.setRawMode(true);
