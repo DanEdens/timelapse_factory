@@ -174,17 +174,16 @@ const text = require(__dirname + '/data/text.js');
     }
 
     async function ConsoleHelp() {
-        console.log('Key: up - Input Date')
-        console.log('Key: down - Input Date')
-        console.log('Key: left - opening Date selector')
-        console.log('Key: right - manuvering for screenshot')
-        console.log('Key: l - Clicking login Button')
-        console.log('Key: p - Navigating to Project')
-        console.log('Key: c - Clearing currently selected dates')
-        console.log('Key: g - ViewGraph')
-        console.log('Key: r - TurnOnRaw')
-        console.log('Key: t - TurnOffRaw')
-
+        console.log(text.Help);
+        console.log(text.TypeDate);
+        console.log(text.ChangeDate);
+        console.log(text.fromDate);
+        console.log(text.logInButton);
+        console.log(text.ChangeProject);
+        console.log(text.ClearDates);
+        console.log(text.ViewGraph);
+        console.log(text.TurnOnRaw);
+        console.log(text.TurnOffRaw);
     }
     process.stdin.on('keypress', async (str, key) => {if (key.sequence === '\u0003') {await browser.close();process.exit();}
         if (['h'].includes(key.name))     {console.log(text.Help);try {await ConsoleHelp()} catch (error) {console.log('Caught:', error.message)}}

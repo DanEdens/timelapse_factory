@@ -1,12 +1,12 @@
 module.exports = {
-    Help: 'Help Message'
-    TypeDate: 'Input Date:',
-    ChangeDate: 'Opening Date selector..',
-    fromDate: 'Screenshot',
-    logInButton: 'Clicking login Button..',
-    ChangeProject: 'Navigating to Project..',
-    ClearDates: 'Clearing selected dates..',
-    ViewGraph: 'Clicking View Graph..',
-    TurnOnRaw: 'Raw Input - On',
-    TurnOffRaw: 'Raw Input - Off'
+    Help: 'Key: up - Help Message',
+    TypeDate: 'Key: down - Input Date:',
+    ChangeDate: 'Key: left - Opening Date selector..',
+    fromDate: 'Key: right - Screenshot',
+    logInButton: 'Key: l - Clicking login Button..',
+    ChangeProject: 'Key: p - Navigating to Project..',
+    ClearDates: 'Key: c - Clearing selected dates..',
+    ViewGraph: 'Key: g - Clicking View Graph..',
+    TurnOnRaw: 'Key: r - Raw Input - On',
+    TurnOffRaw: 'Key: t - Raw Input - Off'
 }
