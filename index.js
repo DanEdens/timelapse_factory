@@ -91,10 +91,11 @@ const text = require(__dirname + '/data/text.js');
         await page.waitForSelector('#formInner0 > div.graphButtons > div > div:nth-child(1)')
         await page.click('#formInner0 > .graphButtons > div > .graphButton:nth-child(1)')
 
-        await page.waitFor(1000)
+        await page.waitFor(3000)
         await page.waitForSelector('form #list2 #selectAllBtn')
         await page.click('form #list2 #selectAllBtn')
 
+        await page.waitFor(2000)
         await page.waitForSelector('form #deleteBtn')
         await page.click('form #deleteBtn')
 
