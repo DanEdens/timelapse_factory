@@ -1,15 +1,17 @@
 const readline = require('readline');
 const puppeteer = require('puppeteer');
 const Promise = require("bluebird");
-const CREDS = require(__dirname + '/user/creds.js');
+const text = require(__dirname + '/data/text.js');
+//const CREDS = require(__dirname + '/user/creds.js');
 // const fs = require('fs');
 
 
 (async () => {
     let wargs = puppeteer.defaultArgs()
+
     function arrayRemove(arr, value) {
         return arr.filter(function (ele) {
-            return ele != value;
+            return ele !== value;
         });
     }
 
@@ -41,7 +43,6 @@ const CREDS = require(__dirname + '/user/creds.js');
         waitUntil: 'domcontentloaded'
     });
     await page.setDefaultNavigationTimeout(0);
-    const navigationPromise = page.waitForNavigation();
     const dimensions = await page.evaluate(() => {
         return {
             width: document.documentElement.clientWidth,
@@ -53,16 +54,13 @@ const CREDS = require(__dirname + '/user/creds.js');
     console.log('Dimensions:', dimensions);
     console.log('Interactive Browser session initiated:\n');
 
-    async function logIn(browser, page) {
+    // @formatter:off
+
+    async function logInButton(browser, page) {
         try {
-            await page.type('#user', CREDS.qvuser);
-            await page.type('#pass', CREDS.qvpass);
             await page.waitForSelector('.main-panel > .content > #login > form > .btn')
             await page.click('.main-panel > .content > #login > form > .btn')
-        } catch (error) {
-            console.log('Caught:', error.message)
-        }
-    }
+        } catch (error) {console.log('Caught:', error.message)}}
 
     async function ChangeProject(browser, page) {
         // Navigate to Plot
@@ -85,6 +83,7 @@ const CREDS = require(__dirname + '/user/creds.js');
         await page.waitForSelector('#objects > img:nth-child(1)')
         await page.click('#objects > img:nth-child(1)')
         await page.waitForSelector('#viewGraphBtn')
+        await page.click('#viewGraphBtn')
     }
 
     async function ClearDates(browser, page) {
@@ -150,143 +149,56 @@ const CREDS = require(__dirname + '/user/creds.js');
     async function fromDate() {
         await page.waitForSelector('#dateList1Container > #dateList1 > #dateList1Body > tr:nth-child(1) > .text-center')
         await page.click('#dateList1Container > #dateList1 > #dateList1Body > tr:nth-child(1) > .text-center')
-        // await page.waitFor(4000);
+        await page.waitFor(2000);
 
         await page.waitForSelector('#link1 > .row > .col-sm > #moveRightBtn > .tim-icons')
         await page.click('#link1 > .row > .col-sm > #moveRightBtn > .tim-icons')
 
         await page.waitForSelector('#dialogDateSelector > #formInner37 #btnApply')
         await page.click('#dialogDateSelector > #formInner37 #btnApply')
-
-        return
     }
 
-    async function TurnOnRaw() {
-        process.stdin.setRawMode(true);
-    }
+    async function TurnOnRaw(browser, page) {process.stdin.setRawMode(true);}
 
-    async function TurnOffRaw() {
-        process.stdin.setRawMode(false);
-    }
-
-    async function GetUserInput(browser, page, value) {
-        try {
-            const rl = readline.createInterface({
-                input: process.stdin,
-                output: process.stdout,
-            });
-            return new Promise(resolve => rl.question(value, ans => {
-                rl.close();
-                console.log(ans);
-                resolve(ans);
-            }))
-        } catch (error) {
-            console.log('Caught:', error.message)
-        }
-    }
+    async function TurnOffRaw(browser,page) {process.stdin.setRawMode(false);}
 
     async function UserInputDialog(browser, page, value) {
         return new Promise(async (resolve) => {
-
             const result = await page.evaluate((msg) => {
-                /*
-                This function will run within our puppeteer browser window, and if we return a promise,
-                page.evaluate() will wait for it to resolve, so we return a promise that resolves
-                when the user responds
-                */
                 return new Promise((resolve) => {
                     resolve(prompt(msg));
                 });
             }, value);
-
-            //Return user input to the calling method
             resolve(result);
-
         })
     }
-    process.stdin.on('keypress', async (str, key) => {
-        if (key.sequence === '\u0003') {
-            await browser.close();
-            process.exit();
-        }
-        if (['up'].includes(key.name)) {
-            console.log('Input Date');
-            try {
-                await TypeDate(browser, page)
-            } catch (error) {
-                console.log('Caught:', error.message)
-            }
-        }
-        if (['down'].includes(key.name)) {
-            console.log('Prompting for End date');
-            try {
-                console.log('empty function')
-            } catch (error) {
-                console.log('Caught:', error.message)
-            }
-        }
-        if (['left'].includes(key.name)) {
-            console.log('opening Date selector');
-            try {
-                await ChangeDate(browser, page);
-            } catch (error) {
-                console.log('Caught:', error.message)
-            }
-        }
-        if (['right'].includes(key.name)) {
-            console.log('manuvering for screenshot');
-            try {
-                await fromDate(browser, page);
-            } catch (error) {
-                console.log('Caught:', error.message)
-            }
-        }
-        if (['r'].includes(key.name)) {
-            try {
-                await toggleRaw(browser, page);
-            } catch (error) {
-                console.log('Caught:', error.message)
-            }
-        }
-        if (['l'].includes(key.name)) {
-            console.log('Login confirmed');
-            try {
-                await logIn(browser, page);
-            } catch (error) {
-                console.log('Caught:', error.message)
-            }
-        }
-        if (['p'].includes(key.name)) {
-            console.log('navtoplot');
-            try {
-                await ChangeProject(browser, page);
-            } catch (error) {
-                console.log('Caught:', error.message)
-            }
-        }
-        if (['c'].includes(key.name)) {
-            console.log('clear dates');
-            try {
-                await ClearDates(browser, page);
-            } catch (error) {
-                console.log('Caught:', error.message)
-            }
-        }
-        if (['t'].includes(key.name)) {
-            try {
-                await TypeDate(browser, page);
-            } catch (error) {
-                console.log('Caught:', error.message)
-            }
-        }
-        if (['g'].includes(key.name)) {
-            try {
-                await ViewGraph(browser, page);
-            } catch (error) {
-                console.log('Caught:', error.message)
-            }
-        }
-    });
+
+    async function ConsoleHelp() {
+        console.log('Key: up - Input Date')
+        console.log('Key: down - Input Date')
+        console.log('Key: left - opening Date selector')
+        console.log('Key: right - manuvering for screenshot')
+        console.log('Key: l - Clicking login Button')
+        console.log('Key: p - Navigating to Project')
+        console.log('Key: c - Clearing currently selected dates')
+        console.log('Key: g - ViewGraph')
+        console.log('Key: r - TurnOnRaw')
+        console.log('Key: t - TurnOffRaw')
+
+    }
+    process.stdin.on('keypress', async (str, key) => {if (key.sequence === '\u0003') {await browser.close();process.exit();}
+        if (['h'].includes(key.name))     {console.log(text.Help);try {await ConsoleHelp()} catch (error) {console.log('Caught:', error.message)}}
+        if (['up'].includes(key.name))    {console.log(text.TypeDate);try {await TypeDate(browser, page)} catch (error) {console.log('Caught:', error.message)}}
+        if (['down'].includes(key.name))  {console.log(text.TypeDate);try {await TypeDate(browser, page)} catch (error) {console.log('Caught:', error.message)}}
+        if (['left'].includes(key.name))  {console.log(text.ChangeDate);try {await ChangeDate(browser, page);} catch (error) {console.log('Caught:', error.message)}}
+        if (['right'].includes(key.name)) {console.log(text.fromDate);try {await fromDate(browser, page);} catch (error) {console.log('Caught:', error.message)}}
+        if (['l'].includes(key.name))     {console.log(text.logInButton);try {await logInButton(browser, page);} catch (error) {console.log('Caught:', error.message)}}
+        if (['p'].includes(key.name))     {console.log(text.ChangeProject);try {await ChangeProject(browser, page);} catch (error) {console.log('Caught:', error.message)}}
+        if (['c'].includes(key.name))     {console.log(text.ClearDates);try {await ClearDates(browser, page);} catch (error) {console.log('Caught:', error.message)}}
+        if (['g'].includes(key.name))     {console.log(text.ViewGraph);try {await ViewGraph(browser, page);} catch (error) {console.log('Caught:', error.message)}}
+        if (['r'].includes(key.name))     {console.log(text.TurnOnRaw);try {await TurnOnRaw(browser, page);} catch (error) {console.log('Caught:', error.message)}}
+        if (['t'].includes(key.name))     {console.log(text.TurnOffRaw);try {await TurnOffRaw(browser, page);} catch (error) {console.log('Caught:', error.message)}}
+    }); // @formatter:on
     readline.emitKeypressEvents(process.stdin);
     process.stdin.setRawMode(true);
 

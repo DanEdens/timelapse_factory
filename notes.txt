@@ -187,3 +187,29 @@ process.stdin.on('keypress', async (str, key) => {
 
 readline.emitKeypressEvents(process.stdin);
 process.stdin.setRawMode(true);
+
+
+
+
+    async function GetUserInput(browser, page, value) {
+        try {
+            const rl = readline.createInterface({
+                input: process.stdin,
+                output: process.stdout,
+            });
+            return new Promise(resolve => rl.question(value, ans => {
+                rl.close();
+                console.log(ans);
+                resolve(ans);
+            }))
+        } catch (error) {
+            console.log('Caught:', error.message)
+        }
+    }
+
+
+/* UserInputdata
+                This function will run within our puppeteer browser window, and if we return a promise,
+                page.evaluate() will wait for it to resolve, so we return a promise that resolves
+                when the user responds
+                */
