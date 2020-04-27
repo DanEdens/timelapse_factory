@@ -1,0 +1,189 @@
+// await page.waitForSelector('#formInner20 > form:nth-child(1) > div:nth-child(2) > div:nth-child(1) > button:nth-child(2)')
+    // await page.click('#formInner20 > form:nth-child(1) > div:nth-child(2) > div:nth-child(1) > button:nth-child(2)')
+    // await page.mouse.click(986,496)
+    // await page.mouse.click(986,496)
+
+    // await page.waitForSelector('#btnApply')
+
+    // // await page.waitForSelector('#btnApply')
+    // await page.keyboard.down('Enter')
+
+
+    // await page.waitForSelector('.sidebar-wrapper > .nav > #menuProjects > a > p')
+    // await page.click('.sidebar-wrapper > .nav > #menuProjects > a > p')
+    //
+    // await page.waitForSelector('.sidePanel > #panelInner > #projectList > .panelRow:nth-child(3) > .panelRowTxt2')
+    // await page.click('.sidePanel > #panelInner > #projectList > .panelRow:nth-child(3) > .panelRowTxt2')
+    //
+    // await page.waitForSelector('.sidebar-wrapper > .nav > #menuViews > a > p')
+    // await page.click('.sidebar-wrapper > .nav > #menuViews > a > p')
+    //
+    // await page.waitForSelector('#panelInner > #viewList > .viewIcon:nth-child(4) > .viewIconIcon > .viewIconThumb')
+    // await page.click('#panelInner > #viewList > .viewIcon:nth-child(4) > .viewIconIcon > .viewIconThumb')
+    //
+    // await page.waitForSelector('.sidebar-mini > #main > #content > #objects > .point:nth-child(3)')
+    // await page.click('.sidebar-mini > #main > #content > #objects > .point:nth-child(3)')
+    //
+    // await page.waitForSelector('.sidebar-mini > #main > #content > #objects > .point:nth-child(3)')
+    // await page.click('.sidebar-mini > #main > #content > #objects > .point:nth-child(3)')
+
+    // await page.waitForSelector('form #graphBtn')
+    // await page.click('form #graphBtn')
+    //
+    // await page.waitForSelector('#dialogSAA3\ X-Axis > #formInner1 > .graphButtons > div > .graphButton:nth-child(1)')
+    // await page.click('#dialogSAA3\ X-Axis > #formInner1 > .graphButtons > div > .graphButton:nth-child(1)')
+    //
+    // await page.waitForSelector('#link1 #sDateTxt')
+    // await page.click('#link1 #sDateTxt')
+    //
+    // await page.waitForSelector('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
+    // await page.click('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
+    //
+    // await page.waitForSelector('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
+    // await page.click('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
+    //
+    // await page.waitForSelector('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
+    // await page.click('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
+    //
+    // await page.waitForSelector('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
+    // await page.click('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
+    //
+    // await page.waitForSelector('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
+    // await page.click('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
+    //
+    // await page.waitForSelector('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
+    // await page.click('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
+    //
+    // await page.waitForSelector('.ui-datepicker-calendar > tbody > tr > .ui-datepicker-week-end > .ui-state-hover')
+    // await page.click('.ui-datepicker-calendar > tbody > tr > .ui-datepicker-week-end > .ui-state-hover')
+    //
+    // await page.waitForSelector('#link1 #eDateTxt')
+    // await page.click('#link1 #eDateTxt')
+    //
+    // await page.waitForSelector('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
+    // await page.click('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
+    //
+    // await page.waitForSelector('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
+    // await page.click('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
+    //
+    // await page.waitForSelector('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
+    // await page.click('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
+    //
+    // await page.waitForSelector('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
+    // await page.click('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
+    //
+    // await page.waitForSelector('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
+    // await page.click('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
+    //
+    // await page.waitForSelector('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
+    // await page.click('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
+    //
+    // await page.waitForSelector('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
+    // await page.click('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
+    //
+    // await page.waitForSelector('.ui-datepicker-calendar > tbody > tr > td > .ui-state-hover')
+    // await page.click('.ui-datepicker-calendar > tbody > tr > td > .ui-state-hover')
+    //
+    // await page.waitForSelector('#dateList1 > #dateList1Body > tr:nth-child(1) > td > .form-check')
+    // await page.click('#dateList1 > #dateList1Body > tr:nth-child(1) > td > .form-check')
+    //
+    // await page.waitForSelector('form #list2 #selectAllBtn')
+    // await page.click('form #list2 #selectAllBtn')
+    //
+    // await page.waitForSelector('form #deleteBtn')
+    // await page.click('form #deleteBtn')
+    //
+    // await page.waitForSelector('#formInner3 #btnApply')
+    // await page.click('#formInner3 #btnApply')
+    //
+    // await page.waitForSelector('#link1 > .row > .col-sm > #moveRightBtn > .tim-icons')
+    // await page.click('#link1 > .row > .col-sm > #moveRightBtn > .tim-icons')
+    //
+    // await page.waitForSelector('#dialogDateSelector > #formInner2 #btnApply')
+    // await page.click('#dialogDateSelector > #formInner2 #btnApply')
+    //
+
+
+
+// records.filter(r => !r.title).map(r => ({…r, title: await getUserInput(r)}))
+// record.title = await getUserInput(record);
+
+// without this, we would only get streams once enter is pressed
+
+// resume stdin in the parent process (node app won't quit all by itself
+// unless an error or process.exit() happens)
+// stdin.setEncoding( 'utf8' );
+
+// on any data into stdin
+// stdin.on( 'data', function( key ){
+//     // ctrl-c ( end of text )
+//     if ( key === '\u0003' ) {
+//         process.exit();
+//     }
+//     // write the key to stdout all normal like
+//     process.stdout.write( key );
+// });
+
+// Orginal example
+        // if (['up', 'down', 'left', 'right'].includes(key.name)) {
+        //     const capitalized = key.name[0].toUpperCase() + key.name.slice(1);
+        //     const keyName = `Arrow${capitalized}`;
+        //     console.log(`page.keyboard.down('${keyName}')`);
+        //     await page.keyboard.down(keyName);
+        // }
+
+            // async function askQuestion(query) {
+    //     const rl = readline.createInterface({
+    //         input: process.stdin,
+    //         output: process.stdout,
+    //     });
+    //     return new Promise(resolve => rl.question(query, ans => {
+    //         rl.close();
+    //         verboselog(ans);
+    //         resolve(ans);
+    //     }))
+    // }
+    // async function getUserInput(browser, page, value) {
+    //
+    //     return new Promise(async (resolve) => {
+    //
+    //         const result = await page.evaluate((msg) => {
+    //             /*
+    //             This function will run within our puppeteer browser window, and if we return a promise,
+    //             page.evaluate() will wait for it to resolve, so we return a promise that resolves
+    //             when the user responds
+    //             */
+    //             return new Promise((resolve) => {
+    //                 resolve(prompt(msg));
+    //             });
+    //         }, value);
+    //
+    //         //Return user input to the calling method
+    //         resolve(result);
+    //
+    //     });
+    // }
+
+
+    // readline.emitKeypressEvents(process.stdin);
+    // process.stdin.setRawMode(true);
+
+})();
+process.stdin.on('keypress', async (str, key) => {
+    // In "raw" mode, so create own kill switch.
+    if (key.sequence === '\u0003') {
+        await browser.close();
+        process.exit();
+    }
+
+    // See https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#keyboarddownkey-options
+    if (['up', 'down', 'left', 'right'].includes(key.name)) {
+        const capitalized = key.name[0].toUpperCase() + key.name.slice(1);
+        const keyName = `Arrow${capitalized}`;
+        console.log(`page.keyboard.down('${keyName}')`);
+        await page.keyboard.down(keyName);
+    }
+});
+
+readline.emitKeypressEvents(process.stdin);
+process.stdin.setRawMode(true);

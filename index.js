@@ -10,39 +10,7 @@ const CREDS = require(__dirname + '/user/creds.js');
 
     // console.log(wargs);
 
-    function toDate(date) {
-        await page.waitForSelector('#dialogSAA3Phase\ 5 > #formInner32 > .graphButtons > div > .graphButton:nth-child(1)')
-        await page.click('#dialogSAA3Phase\ 5 > #formInner32 > .graphButtons > div > .graphButton:nth-child(1)')
 
-        await page.waitForSelector('#dateList2Container > #dateList2 > #dateList2Body > tr > .text-center')
-        await page.click('#dateList2Container > #dateList2 > #dateList2Body > tr > .text-center')
-
-        await page.waitForSelector('.tab-content > #link1 #moveLeftBtn')
-        await page.click('.tab-content > #link1 #moveLeftBtn')
-
-        await page.waitForSelector('#dialogDelete > #formInner38 > form > .text-center > .form-group')
-        await page.click('#dialogDelete > #formInner38 > form > .text-center > .form-group')
-
-        await page.waitForSelector('#formInner38 #btnApply')
-        await page.click('#formInner38 #btnApply')
-
-        await page.waitForSelector('#link1 #sDateTxt')
-        await page.click('#link1 #sDateTxt')
-    };
-
-    function fromDate() {
-        await page.waitFor(4000);
-        await page.waitForSelector('#dateList1Container > #dateList1 > #dateList1Body > tr:nth-child(1) > .text-center')
-        await page.click('#dateList1Container > #dateList1 > #dateList1Body > tr:nth-child(1) > .text-center')
-
-        await page.waitForSelector('#link1 > .row > .col-sm > #moveRightBtn > .tim-icons')
-        await page.click('#link1 > .row > .col-sm > #moveRightBtn > .tim-icons')
-
-        await page.waitForSelector('#dialogDateSelector > #formInner37 #btnApply')
-        await page.click('#dialogDateSelector > #formInner37 #btnApply')
-
-        return;
-    };
 
     function arrayRemove(arr, value) {
         return arr.filter(function (ele) {
@@ -60,15 +28,14 @@ const CREDS = require(__dirname + '/user/creds.js');
     const userdata = process.env.userdata
     const chromeexe = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe";
     wargs.push('--no-sandbox');
-    wargs.push('--start-fullscreen');
-    wargs.push('--new-window');
+    // wargs.push('--start-fullscreen');
+    //wargs.push('--new-window');
     let browser = await puppeteer.launch({
         userDataDir: userdata,
         executablePath: chromeexe,
         ignoreDefaultArgs: ['--headless', '--password-store=basic', '--disable-extensions', '--hide-scrollbars'],
         args: wargs
     });
-    // await fs.promises.mkdir('./data/screenshots', { recursive: true });
     const page = await browser.newPage();
     await page.setViewport({
         width: 1920,
@@ -89,7 +56,9 @@ const CREDS = require(__dirname + '/user/creds.js');
     });
 
     console.log('Dimensions:', dimensions);
+
     // await navigationPromise;
+
     async function logIn(browser, page) {
         try {
             await page.type('#user', CREDS.qvuser);
@@ -101,8 +70,8 @@ const CREDS = require(__dirname + '/user/creds.js');
         }
     };
 
-    // Navigate to Plot
     async function navtoPlot(browser, page) {
+        // Navigate to Plot
         await page.waitFor(1000)
         await page.waitForSelector('.sidebar-wrapper > .nav > #menuProjects > a > p')
         await page.click('.sidebar-wrapper > .nav > #menuProjects > a > p')
@@ -120,8 +89,8 @@ const CREDS = require(__dirname + '/user/creds.js');
         await page.click('#viewGraphBtn')
     };
 
-    // clear default dates
     async function clearDates(browser, page) {
+        // clear default dates
         await page.waitFor(1000)
         await page.waitForSelector('#formInner0 > div.graphButtons > div > div:nth-child(1)')
         await page.click('#formInner0 > .graphButtons > div > .graphButton:nth-child(1)')
@@ -138,6 +107,7 @@ const CREDS = require(__dirname + '/user/creds.js');
 
     async function typeDate(browser, page) {
         // Add new date
+        console.log('typedate');
         await page.waitForSelector('#link1 #sDateTxt')
         await page.click('#link1 #sDateTxt')
         //await page.keyboard.type(targetdate)
@@ -148,167 +118,57 @@ const CREDS = require(__dirname + '/user/creds.js');
         await page.click('#link1 > .row > .col-sm > #moveRightBtn > .tim-icons')
     };
 
+    async function toDate(date) {
+        await page.waitForSelector('#dialogSAA3Phase\ 5 > #formInner32 > .graphButtons > div > .graphButton:nth-child(1)')
+        await page.click('#dialogSAA3Phase\ 5 > #formInner32 > .graphButtons > div > .graphButton:nth-child(1)')
 
-    // await page.waitForSelector('#formInner20 > form:nth-child(1) > div:nth-child(2) > div:nth-child(1) > button:nth-child(2)')
-    // await page.click('#formInner20 > form:nth-child(1) > div:nth-child(2) > div:nth-child(1) > button:nth-child(2)')
-    // await page.mouse.click(986,496)
-    // await page.mouse.click(986,496)
+        await page.waitForSelector('#dateList2Container > #dateList2 > #dateList2Body > tr > .text-center')
+        await page.click('#dateList2Container > #dateList2 > #dateList2Body > tr > .text-center')
 
-    // await page.waitForSelector('#btnApply')
+        await page.waitForSelector('.tab-content > #link1 #moveLeftBtn')
+        await page.click('.tab-content > #link1 #moveLeftBtn')
 
-    // // await page.waitForSelector('#btnApply')
-    // await page.keyboard.down('Enter')
+        await page.waitForSelector('#dialogDelete > #formInner38 > form > .text-center > .form-group')
+        await page.click('#dialogDelete > #formInner38 > form > .text-center > .form-group')
 
+        await page.waitForSelector('#formInner38 #btnApply')
+        await page.click('#formInner38 #btnApply')
 
-    // await page.waitForSelector('.sidebar-wrapper > .nav > #menuProjects > a > p')
-    // await page.click('.sidebar-wrapper > .nav > #menuProjects > a > p')
-    //
-    // await page.waitForSelector('.sidePanel > #panelInner > #projectList > .panelRow:nth-child(3) > .panelRowTxt2')
-    // await page.click('.sidePanel > #panelInner > #projectList > .panelRow:nth-child(3) > .panelRowTxt2')
-    //
-    // await page.waitForSelector('.sidebar-wrapper > .nav > #menuViews > a > p')
-    // await page.click('.sidebar-wrapper > .nav > #menuViews > a > p')
-    //
-    // await page.waitForSelector('#panelInner > #viewList > .viewIcon:nth-child(4) > .viewIconIcon > .viewIconThumb')
-    // await page.click('#panelInner > #viewList > .viewIcon:nth-child(4) > .viewIconIcon > .viewIconThumb')
-    //
-    // await page.waitForSelector('.sidebar-mini > #main > #content > #objects > .point:nth-child(3)')
-    // await page.click('.sidebar-mini > #main > #content > #objects > .point:nth-child(3)')
-    //
-    // await page.waitForSelector('.sidebar-mini > #main > #content > #objects > .point:nth-child(3)')
-    // await page.click('.sidebar-mini > #main > #content > #objects > .point:nth-child(3)')
+        await page.waitForSelector('#link1 #sDateTxt')
+        await page.click('#link1 #sDateTxt')
+    };
 
-    // await page.waitForSelector('form #graphBtn')
-    // await page.click('form #graphBtn')
-    //
-    // await page.waitForSelector('#dialogSAA3\ X-Axis > #formInner1 > .graphButtons > div > .graphButton:nth-child(1)')
-    // await page.click('#dialogSAA3\ X-Axis > #formInner1 > .graphButtons > div > .graphButton:nth-child(1)')
-    //
-    // await page.waitForSelector('#link1 #sDateTxt')
-    // await page.click('#link1 #sDateTxt')
-    //
-    // await page.waitForSelector('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
-    // await page.click('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
-    //
-    // await page.waitForSelector('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
-    // await page.click('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
-    //
-    // await page.waitForSelector('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
-    // await page.click('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
-    //
-    // await page.waitForSelector('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
-    // await page.click('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
-    //
-    // await page.waitForSelector('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
-    // await page.click('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
-    //
-    // await page.waitForSelector('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
-    // await page.click('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
-    //
-    // await page.waitForSelector('.ui-datepicker-calendar > tbody > tr > .ui-datepicker-week-end > .ui-state-hover')
-    // await page.click('.ui-datepicker-calendar > tbody > tr > .ui-datepicker-week-end > .ui-state-hover')
-    //
-    // await page.waitForSelector('#link1 #eDateTxt')
-    // await page.click('#link1 #eDateTxt')
-    //
-    // await page.waitForSelector('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
-    // await page.click('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
-    //
-    // await page.waitForSelector('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
-    // await page.click('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
-    //
-    // await page.waitForSelector('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
-    // await page.click('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
-    //
-    // await page.waitForSelector('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
-    // await page.click('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
-    //
-    // await page.waitForSelector('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
-    // await page.click('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
-    //
-    // await page.waitForSelector('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
-    // await page.click('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
-    //
-    // await page.waitForSelector('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
-    // await page.click('.sidebar-mini > #ui-datepicker-div > .ui-datepicker-header > .ui-datepicker-prev > .ui-icon')
-    //
-    // await page.waitForSelector('.ui-datepicker-calendar > tbody > tr > td > .ui-state-hover')
-    // await page.click('.ui-datepicker-calendar > tbody > tr > td > .ui-state-hover')
-    //
-    // await page.waitForSelector('#dateList1 > #dateList1Body > tr:nth-child(1) > td > .form-check')
-    // await page.click('#dateList1 > #dateList1Body > tr:nth-child(1) > td > .form-check')
-    //
-    // await page.waitForSelector('form #list2 #selectAllBtn')
-    // await page.click('form #list2 #selectAllBtn')
-    //
-    // await page.waitForSelector('form #deleteBtn')
-    // await page.click('form #deleteBtn')
-    //
-    // await page.waitForSelector('#formInner3 #btnApply')
-    // await page.click('#formInner3 #btnApply')
-    //
-    // await page.waitForSelector('#link1 > .row > .col-sm > #moveRightBtn > .tim-icons')
-    // await page.click('#link1 > .row > .col-sm > #moveRightBtn > .tim-icons')
-    //
-    // await page.waitForSelector('#dialogDateSelector > #formInner2 #btnApply')
-    // await page.click('#dialogDateSelector > #formInner2 #btnApply')
-    //
+    async function fromDate() {
+        await page.waitFor(4000);
+        await page.waitForSelector('#dateList1Container > #dateList1 > #dateList1Body > tr:nth-child(1) > .text-center')
+        await page.click('#dateList1Container > #dateList1 > #dateList1Body > tr:nth-child(1) > .text-center')
 
-    process.stdin.on('keypress', async (str, key) => {
-        if (key.sequence === '\u0003') {
-            await browser.close();
-            process.exit();
-        }
-        // process.stdin.resume();
-        //
-        // static async askQuestion(query) {
-        //     const rl = readline.createInterface({
-        //         input: process.stdin,
-        //         output: process.stdout,
-        //     });
-        //     return new Promise(resolve => rl.question(query, ans => {
-        //         rl.close();
-        //         verboselog(ans);
-        //         resolve(ans);
-        //     }))
-        // }
+        await page.waitForSelector('#link1 > .row > .col-sm > #moveRightBtn > .tim-icons')
+        await page.click('#link1 > .row > .col-sm > #moveRightBtn > .tim-icons')
 
-        process.stdin.setEncoding('utf8');
-        process.stdin.on('data', function (key) {
-            // ctrl-c ( end of text )
-            if (key === '\u0003') {
-                process.exit();
-            }
-            // write the key to stdout all normal like
-            console.log(key);
-        });
-        if (['left'].includes(key.name)) {
-            console.log('opening Date selector');
-            await toDate(browser, page);
-        }
-        if (['right'].includes(key.name)) {
-            console.log('manuvering for screenshot');
-            await fromDate(browser, page);
-        }
-        if (['up'].includes(key.name)) {
-            console.log('Input target');
-            let date = await getUserInput(browser, page, 'Start Date: \n');
-        }
-        if (['down'].includes(key.name)) {
-            await getUserInput(browser, page, 'Start Date: \n');
-            console.log('Prompting for End date');
-        }
-        // if (['up', 'down', 'left', 'right'].includes(key.name)) {
-        //     const capitalized = key.name[0].toUpperCase() + key.name.slice(1);
-        //     const keyName = `Arrow${capitalized}`;
-        //     console.log(`page.keyboard.down('${keyName}')`);
-        //     await page.keyboard.down(keyName);
-        // }
-    });
+        await page.waitForSelector('#dialogDateSelector > #formInner37 #btnApply')
+        await page.click('#dialogDateSelector > #formInner37 #btnApply')
 
+        return;
+    };
 
     async function getUserInput(browser, page, value) {
+        try {
+            const rl = readline.createInterface({
+                input: process.stdin,
+                output: process.stdout,
+            });
+            return new Promise(resolve => rl.question(value, ans => {
+                rl.close();
+                console.log(ans);
+                resolve(ans);
+            }))
+        } catch (error) {
+            console.log('Caught:', error.message)
+        }
+    };
 
+    async function UserInputDiolog(browser, page, value) {
         return new Promise(async (resolve) => {
 
             const result = await page.evaluate((msg) => {
@@ -325,29 +185,88 @@ const CREDS = require(__dirname + '/user/creds.js');
             //Return user input to the calling method
             resolve(result);
 
-        });
-    }
+        })
+    };
+    process.stdin.on('keypress', async (str, key) => {
+        if (key.sequence === '\u0003') {
+            await browser.close();
+            process.exit();
+        }
 
+        if (['left'].includes(key.name)) {
+            console.log('opening Date selector');
+            try {
+                await toDate(browser, page);
+            } catch (error) {
+                console.log('Caught:', error.message)
+            }
+        }
+        if (['right'].includes(key.name)) {
+            console.log('manuvering for screenshot');
+            try {
+                await fromDate(browser, page);
+            } catch (error) {
+                console.log('Caught:', error.message)
+            }
+        }
+        if (['up'].includes(key.name)) {
+            console.log('Input Date');
+            try {
+                // let date = await getUserInput(browser, page, 'Start Date: \n');
 
-    // readline.emitKeypressEvents(process.stdin);
-    // process.stdin.setRawMode(true);
+                let date = await UserInputDiolog(browser, page, 'Start Date: \n');
+                await page.click('#sDateTxt')
+                await page.keyboard.down('Control')
+                await page.keyboard.down('A')
+                await page.keyboard.up('A')
+                await page.keyboard.up('Control')
+                await page.type('#sDateTxt', date)
+                await page.keyboard.press("Enter");
+            } catch (error) {
+                console.log('Caught:', error.message)
+            }
+        }
+        if (['down'].includes(key.name)) {
+            console.log('Prompting for End date');
+            try {
+                console.log('empty function')
+            } catch (error) {
+                console.log('Caught:', error.message)
+            }
+        }
+        if (['l'].includes(key.name)) {
+            console.log('Login confirmed');
+            try {
+                await logIn(browser, page);
+            } catch (error) {
+                console.log('Caught:', error.message)
+            }
+        }
+        if (['p'].includes(key.name)) {
+            console.log('navtoplot');
+            try {
+                await navtoPlot(browser, page);
+            } catch (error) {
+                console.log('Caught:', error.message)
+            }
+        }
+        if (['c'].includes(key.name)) {
+            console.log('clear dates');
+            try {
+                await clearDates(browser, page);
+            } catch (error) {
+                console.log('Caught:', error.message)
+            }
+        }
+        if (['t'].includes(key.name)) {
+            try {
+                await typeDate(browser, page);
+            } catch (error) {
+                console.log('Caught:', error.message)
+            }
+        }
+    });
+    readline.emitKeypressEvents(process.stdin);
+    process.stdin.setRawMode(true);
 
 })();
-// records.filter(r => !r.title).map(r => ({…r, title: await getUserInput(r)}))
-// record.title = await getUserInput(record);
-
-// without this, we would only get streams once enter is pressed
-
-// resume stdin in the parent process (node app won't quit all by itself
-// unless an error or process.exit() happens)
-// stdin.setEncoding( 'utf8' );
-
-// on any data into stdin
-// stdin.on( 'data', function( key ){
-//     // ctrl-c ( end of text )
-//     if ( key === '\u0003' ) {
-//         process.exit();
-//     }
-//     // write the key to stdout all normal like
-//     process.stdout.write( key );
-// });
