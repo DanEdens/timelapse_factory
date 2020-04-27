@@ -64,7 +64,7 @@ const CREDS = require(__dirname + '/user/creds.js');
         }
     }
 
-    async function navtoPlot(browser, page) {
+    async function ChangeProject(browser, page) {
         // Navigate to Plot
         await page.waitFor(1000)
         await page.waitForSelector('.sidebar-wrapper > .nav > #menuProjects > a > p')
@@ -77,14 +77,14 @@ const CREDS = require(__dirname + '/user/creds.js');
 
     }
 
-    async function openPlot(browser, page) {
+    async function OpenPlot(browser, page) {
         await page.waitFor(1000)
         await page.waitForSelector('#objects > img:nth-child(1)')
         await page.click('#objects > img:nth-child(1)')
         await page.waitForSelector('#viewGraphBtn')
     }
 
-    async function clearDates(browser, page) {
+    async function ClearDates(browser, page) {
         // clear default dates
         await page.waitForSelector('#formInner0 > div.graphButtons > div > div:nth-child(1)')
         await page.click('#formInner0 > .graphButtons > div > .graphButton:nth-child(1)')
@@ -98,9 +98,9 @@ const CREDS = require(__dirname + '/user/creds.js');
 
         const elements = await page.$x('/html/body/div[1]/div[5]/div[2]/form/div/div/button[2]')
         await elements[0].click()
-    };
+    }
 
-    async function typeDate(browser, page) {
+    async function TypeDate(browser, page) {
         let date = await UserInputDialog(browser, page, 'Start Date: \n');
         await page.click('#sDateTxt')
 
@@ -124,7 +124,7 @@ const CREDS = require(__dirname + '/user/creds.js');
         await page.click('#btnApply')
     }
 
-    async function toDate() {
+    async function ChangeDate() {
         await page.waitForSelector('#dialogSAA3Phase\ 5 > #formInner32 > .graphButtons > div > .graphButton:nth-child(1)')
         await page.click('#dialogSAA3Phase\ 5 > #formInner32 > .graphButtons > div > .graphButton:nth-child(1)')
 
@@ -142,12 +142,12 @@ const CREDS = require(__dirname + '/user/creds.js');
 
         await page.waitForSelector('#link1 #sDateTxt')
         await page.click('#link1 #sDateTxt')
-    };
+    }
 
     async function fromDate() {
-        await page.waitFor(4000);
         await page.waitForSelector('#dateList1Container > #dateList1 > #dateList1Body > tr:nth-child(1) > .text-center')
         await page.click('#dateList1Container > #dateList1 > #dateList1Body > tr:nth-child(1) > .text-center')
+        // await page.waitFor(4000);
 
         await page.waitForSelector('#link1 > .row > .col-sm > #moveRightBtn > .tim-icons')
         await page.click('#link1 > .row > .col-sm > #moveRightBtn > .tim-icons')
@@ -155,18 +155,18 @@ const CREDS = require(__dirname + '/user/creds.js');
         await page.waitForSelector('#dialogDateSelector > #formInner37 #btnApply')
         await page.click('#dialogDateSelector > #formInner37 #btnApply')
 
-        return;
-    };
+        return
+    }
 
-    async function turnOnRaw() {
+    async function TurnOnRaw() {
         process.stdin.setRawMode(true);
     }
 
-    async function turnOffRaw() {
+    async function TurnOffRaw() {
         process.stdin.setRawMode(false);
     }
 
-    async function getUserInput(browser, page, value) {
+    async function GetUserInput(browser, page, value) {
         try {
             const rl = readline.createInterface({
                 input: process.stdin,
@@ -180,7 +180,7 @@ const CREDS = require(__dirname + '/user/creds.js');
         } catch (error) {
             console.log('Caught:', error.message)
         }
-    };
+    }
 
     async function UserInputDialog(browser, page, value) {
         return new Promise(async (resolve) => {
@@ -200,7 +200,7 @@ const CREDS = require(__dirname + '/user/creds.js');
             resolve(result);
 
         })
-    };
+    }
     process.stdin.on('keypress', async (str, key) => {
         if (key.sequence === '\u0003') {
             await browser.close();
@@ -209,23 +209,16 @@ const CREDS = require(__dirname + '/user/creds.js');
         if (['left'].includes(key.name)) {
             console.log('opening Date selector');
             try {
-                await toDate(browser, page);
+                await ChangeDate(browser, page);
             } catch (error) {
                 console.log('Caught:', error.message)
             }
         }
-        if (['r'].includes(key.name)) {
             console.log('opening Date selector');
-            try {
-                await toggleRaw(browser, page);
-            } catch (error) {
-                console.log('Caught:', error.message)
-            }
-        }
         if (['left'].includes(key.name)) {
             console.log('opening Date selector');
             try {
-                await toDate(browser, page);
+                await ChangeDate(browser, page);
             } catch (error) {
                 console.log('Caught:', error.message)
             }
@@ -241,7 +234,7 @@ const CREDS = require(__dirname + '/user/creds.js');
         if (['up'].includes(key.name)) {
             console.log('Input Date');
             try {
-                await typeDate(browser, page)
+                await TypeDate(browser, page)
             } catch (error) {
                 console.log('Caught:', error.message)
             }
@@ -250,6 +243,13 @@ const CREDS = require(__dirname + '/user/creds.js');
             console.log('Prompting for End date');
             try {
                 console.log('empty function')
+            } catch (error) {
+                console.log('Caught:', error.message)
+            }
+        }
+        if (['r'].includes(key.name)) {
+            try {
+                await toggleRaw(browser, page);
             } catch (error) {
                 console.log('Caught:', error.message)
             }
@@ -265,7 +265,7 @@ const CREDS = require(__dirname + '/user/creds.js');
         if (['p'].includes(key.name)) {
             console.log('navtoplot');
             try {
-                await navtoPlot(browser, page);
+                await ChangeProject(browser, page);
             } catch (error) {
                 console.log('Caught:', error.message)
             }
@@ -273,14 +273,14 @@ const CREDS = require(__dirname + '/user/creds.js');
         if (['c'].includes(key.name)) {
             console.log('clear dates');
             try {
-                await clearDates(browser, page);
+                await ClearDates(browser, page);
             } catch (error) {
                 console.log('Caught:', error.message)
             }
         }
         if (['t'].includes(key.name)) {
             try {
-                await typeDate(browser, page);
+                await TypeDate(browser, page);
             } catch (error) {
                 console.log('Caught:', error.message)
             }
