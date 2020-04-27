@@ -7,10 +7,6 @@ const CREDS = require(__dirname + '/user/creds.js');
 
 (async () => {
     let wargs = puppeteer.defaultArgs()
-
-    // console.log(wargs);
-
-
     function arrayRemove(arr, value) {
         return arr.filter(function (ele) {
             return ele != value;
@@ -38,7 +34,7 @@ const CREDS = require(__dirname + '/user/creds.js');
     const page = await browser.newPage();
     await page.setViewport({
         width: 1920,
-        height: 1080,
+        height: 980,
         deviceScaleFactor: .6
     }); //
     await page.goto('https://quickview.geo-instruments.com/index.php', {
@@ -55,8 +51,7 @@ const CREDS = require(__dirname + '/user/creds.js');
     });
 
     console.log('Dimensions:', dimensions);
-
-    // await navigationPromise;
+    console.log('Interactive Browser session initiated:\n');
 
     async function logIn(browser, page) {
         try {
@@ -80,20 +75,21 @@ const CREDS = require(__dirname + '/user/creds.js');
         await page.waitForSelector('.sidePanel > #panelInner > #projectList > .panelRow:nth-child(3) > .panelRowTxt2')
         await page.click('.sidePanel > #panelInner > #projectList > .panelRow:nth-child(3) > .panelRowTxt2')
 
+    }
+
+    async function openPlot(browser, page) {
         await page.waitFor(1000)
         await page.waitForSelector('#objects > img:nth-child(1)')
         await page.click('#objects > img:nth-child(1)')
-
         await page.waitForSelector('#viewGraphBtn')
-        await page.click('#viewGraphBtn')
-    };
+    }
 
     async function clearDates(browser, page) {
         // clear default dates
-        await page.waitFor(1000)
         await page.waitForSelector('#formInner0 > div.graphButtons > div > div:nth-child(1)')
         await page.click('#formInner0 > .graphButtons > div > .graphButton:nth-child(1)')
 
+        await page.waitFor(1000)
         await page.waitForSelector('form #list2 #selectAllBtn')
         await page.click('form #list2 #selectAllBtn')
 
@@ -104,8 +100,8 @@ const CREDS = require(__dirname + '/user/creds.js');
         await elements[0].click()
     };
 
-    async function typeDate(browser, page, date) {
-
+    async function typeDate(browser, page) {
+        let date = await UserInputDialog(browser, page, 'Start Date: \n');
         await page.click('#sDateTxt')
 
         await page.keyboard.down('Control')
@@ -116,9 +112,11 @@ const CREDS = require(__dirname + '/user/creds.js');
         await page.type('#sDateTxt', date)
         await page.keyboard.press("Enter");
 
+        await page.waitFor(1000)
         await page.waitForSelector('#dateList1Body > tr:nth-child(1) > td.text-center')
         await page.click('#dateList1Body > tr:nth-child(1) > td.text-center')
 
+        await page.waitFor(1000)
         await page.waitForSelector('#moveRightBtn > i')
         await page.click('#moveRightBtn > i')
 
@@ -160,8 +158,12 @@ const CREDS = require(__dirname + '/user/creds.js');
         return;
     };
 
-    async function toggleRaw() {
+    async function turnOnRaw() {
+        process.stdin.setRawMode(true);
+    }
 
+    async function turnOffRaw() {
+        process.stdin.setRawMode(false);
     }
 
     async function getUserInput(browser, page, value) {
@@ -239,8 +241,7 @@ const CREDS = require(__dirname + '/user/creds.js');
         if (['up'].includes(key.name)) {
             console.log('Input Date');
             try {
-                let date = UserInputDialog(browser, page, 'Start Date: \n');
-                await typeDate(browser, page, date)
+                await typeDate(browser, page)
             } catch (error) {
                 console.log('Caught:', error.message)
             }
