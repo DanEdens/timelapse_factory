@@ -11,7 +11,6 @@ const CREDS = require(__dirname + '/user/creds.js');
     // console.log(wargs);
 
 
-
     function arrayRemove(arr, value) {
         return arr.filter(function (ele) {
             return ele != value;
@@ -68,7 +67,7 @@ const CREDS = require(__dirname + '/user/creds.js');
         } catch (error) {
             console.log('Caught:', error.message)
         }
-    };
+    }
 
     async function navtoPlot(browser, page) {
         // Navigate to Plot
@@ -105,20 +104,29 @@ const CREDS = require(__dirname + '/user/creds.js');
         await elements[0].click()
     };
 
-    async function typeDate(browser, page) {
-        // Add new date
-        console.log('typedate');
-        await page.waitForSelector('#link1 #sDateTxt')
-        await page.click('#link1 #sDateTxt')
-        //await page.keyboard.type(targetdate)
-        await page.waitForSelector('#dateList1 > #dateList1Body > tr:nth-child(1) > td > .form-check')
-        await page.click('#dateList1 > #dateList1Body > tr:nth-child(1) > td > .form-check')
+    async function typeDate(browser, page, date) {
 
-        await page.waitForSelector('#link1 > .row > .col-sm > #moveRightBtn > .tim-icons')
-        await page.click('#link1 > .row > .col-sm > #moveRightBtn > .tim-icons')
-    };
+        await page.click('#sDateTxt')
 
-    async function toDate(date) {
+        await page.keyboard.down('Control')
+        await page.keyboard.down('A')
+        await page.keyboard.up('A')
+        await page.keyboard.up('Control')
+
+        await page.type('#sDateTxt', date)
+        await page.keyboard.press("Enter");
+
+        await page.waitForSelector('#dateList1Body > tr:nth-child(1) > td.text-center')
+        await page.click('#dateList1Body > tr:nth-child(1) > td.text-center')
+
+        await page.waitForSelector('#moveRightBtn > i')
+        await page.click('#moveRightBtn > i')
+
+        await page.waitForSelector('#btnApply')
+        await page.click('#btnApply')
+    }
+
+    async function toDate() {
         await page.waitForSelector('#dialogSAA3Phase\ 5 > #formInner32 > .graphButtons > div > .graphButton:nth-child(1)')
         await page.click('#dialogSAA3Phase\ 5 > #formInner32 > .graphButtons > div > .graphButton:nth-child(1)')
 
@@ -152,6 +160,10 @@ const CREDS = require(__dirname + '/user/creds.js');
         return;
     };
 
+    async function toggleRaw() {
+
+    }
+
     async function getUserInput(browser, page, value) {
         try {
             const rl = readline.createInterface({
@@ -168,7 +180,7 @@ const CREDS = require(__dirname + '/user/creds.js');
         }
     };
 
-    async function UserInputDiolog(browser, page, value) {
+    async function UserInputDialog(browser, page, value) {
         return new Promise(async (resolve) => {
 
             const result = await page.evaluate((msg) => {
@@ -192,7 +204,22 @@ const CREDS = require(__dirname + '/user/creds.js');
             await browser.close();
             process.exit();
         }
-
+        if (['left'].includes(key.name)) {
+            console.log('opening Date selector');
+            try {
+                await toDate(browser, page);
+            } catch (error) {
+                console.log('Caught:', error.message)
+            }
+        }
+        if (['r'].includes(key.name)) {
+            console.log('opening Date selector');
+            try {
+                await toggleRaw(browser, page);
+            } catch (error) {
+                console.log('Caught:', error.message)
+            }
+        }
         if (['left'].includes(key.name)) {
             console.log('opening Date selector');
             try {
@@ -212,16 +239,8 @@ const CREDS = require(__dirname + '/user/creds.js');
         if (['up'].includes(key.name)) {
             console.log('Input Date');
             try {
-                // let date = await getUserInput(browser, page, 'Start Date: \n');
-
-                let date = await UserInputDiolog(browser, page, 'Start Date: \n');
-                await page.click('#sDateTxt')
-                await page.keyboard.down('Control')
-                await page.keyboard.down('A')
-                await page.keyboard.up('A')
-                await page.keyboard.up('Control')
-                await page.type('#sDateTxt', date)
-                await page.keyboard.press("Enter");
+                let date = UserInputDialog(browser, page, 'Start Date: \n');
+                await typeDate(browser, page, date)
             } catch (error) {
                 console.log('Caught:', error.message)
             }
