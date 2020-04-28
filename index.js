@@ -9,24 +9,24 @@ const text = require(__dirname + '/data/text.js');
 (async () => {
     let wargs = puppeteer.defaultArgs()
 
-    function arrayRemove(arr, value) {
-        return arr.filter(function (ele) {
-            return ele !== value;
-        });
-    }
+    // function arrayRemove(arr, value) {
+    //     return arr.filter(function (ele) {
+    //         return ele !== value;
+    //     });
+    // }
 
-    wargs = arrayRemove(wargs, '--password-store=basic');
-    wargs = arrayRemove(wargs, '--hide-scrollbars');
-    wargs = arrayRemove(wargs, '--use-mock-keychain');
-    wargs = arrayRemove(wargs, '--disable-extensions');
-    wargs = arrayRemove(wargs, '--disable-sync');
-    wargs = arrayRemove(wargs, '--headless')
-    wargs = arrayRemove(wargs, 'about:blank')
+    // wargs = arrayRemove(wargs, '--password-store=basic');
+    // wargs = arrayRemove(wargs, '--hide-scrollbars');
+    // wargs = arrayRemove(wargs, '--use-mock-keychain');
+    // wargs = arrayRemove(wargs, '--disable-extensions');
+    // wargs = arrayRemove(wargs, '--disable-sync');
+    // wargs = arrayRemove(wargs, '--headless')
+    // wargs = arrayRemove(wargs, 'about:blank')
     const userdata = process.env.userdata
     const chromeexe = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe";
     wargs.push('--no-sandbox');
     // wargs.push('--start-fullscreen');
-    //wargs.push('--new-window');
+    // wargs.push('--new-window');
     let browser = await puppeteer.launch({
         userDataDir: userdata,
         executablePath: chromeexe,
@@ -120,7 +120,6 @@ const text = require(__dirname + '/data/text.js');
         await page.keyboard.press("Enter")
         }
 
-
     async function ApplyNewDate(browser,page) {
         await page.waitForSelector('#dateList1Body > tr:nth-child(1) > td.text-center')
         await page.waitFor(1000)
@@ -207,7 +206,7 @@ const text = require(__dirname + '/data/text.js');
         if (['g'].includes(key.name))     {console.log('ViewGraph');try {await ViewGraph(browser, page);} catch (error) {console.log('Caught:', error.message)}}
         if (['r'].includes(key.name))     {console.log('TurnOnRaw');try {await TurnOnRaw();} catch (error) {console.log('Caught:', error.message)}}
         if (['t'].includes(key.name))     {console.log('TurnOffRaw');try {await TurnOffRaw();} catch (error) {console.log('Caught:', error.message)}}
-        if (['j'].includes(key.name))     {console.log('ApplyNewDate');try {await ApplyNewDate()(browser, page);} catch (error) {console.log('Caught:', error.message)}}
+        if (['j'].includes(key.name))     {console.log('ApplyNewDate');try {await ApplyNewDate(browser, page);} catch (error) {console.log('Caught:', error.message)}}
     }); // @formatter:on
     readline.emitKeypressEvents(process.stdin);
     process.stdin.setRawMode(true);
