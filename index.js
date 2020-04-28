@@ -8,53 +8,39 @@ const text = require(__dirname + '/data/text.js');
 
 (async () => {
     const verbose = true
-    let wargs = puppeteer.defaultArgs()
-
-    // function arrayRemove(arr, value) {
-    //     return arr.filter(function (ele) {
-    //         return ele !== value;
-    //     });
-    // }
-
-    // wargs = arrayRemove(wargs, '--password-store=basic');
-    // wargs = arrayRemove(wargs, '--hide-scrollbars');
-    // wargs = arrayRemove(wargs, '--use-mock-keychain');
-    // wargs = arrayRemove(wargs, '--disable-extensions');
-    // wargs = arrayRemove(wargs, '--disable-sync');
-    // wargs = arrayRemove(wargs, '--headless')
-    // wargs = arrayRemove(wargs, 'about:blank')
     const userdata = process.env.userdata
-    const chromeexe = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe";
+    const chromeexe = 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe';
+    let wargs = puppeteer.defaultArgs();
     wargs.push('--no-sandbox');
     // wargs.push('--start-fullscreen');
     // wargs.push('--new-window');
     let browser = await puppeteer.launch({
         userDataDir: userdata,
-        executablePath: chromeexe,
+        //executablePath: chromeexe,
         ignoreDefaultArgs: ['--headless', '--password-store=basic', '--disable-extensions', '--hide-scrollbars'],
-        args: wargs
+        args: wargs,
     });
     const page = await browser.newPage();
     await page.setViewport({
         width: 1920,
         height: 980,
-        deviceScaleFactor: .6
+        deviceScaleFactor: .6,
     }); //
     await page.goto('https://quickview.geo-instruments.com/index.php', {
-        waitUntil: 'domcontentloaded'
+        waitUntil: 'domcontentloaded',
     });
     await page.setDefaultNavigationTimeout(0);
     const dimensions = await page.evaluate(() => {
         return {
             width: document.documentElement.clientWidth,
             height: document.documentElement.clientHeight,
-            deviceScaleFactor: window.devicePixelRatio
+            deviceScaleFactor: window.devicePixelRatio,
         };
     });
     // @formatter:off
 
     if (verbose) {console.log('Window Dimensions:', dimensions)}
-    console.log('Interactive Browser session initiated:\n');
+    console.log('Interactive Browser session initiated:\n')
 
 
     async function logInButton(browser, page) {
@@ -109,6 +95,13 @@ const text = require(__dirname + '/data/text.js');
 
     async function keypressEnter(browser,page) {await page.keyboard.type(String.fromCharCode(13));}
 
+    async function enterUrl(browser,page) {
+        let url = await UserInputDialog(browser, page, "Input Url");
+        await page.goto(url, {
+            waitUntil: 'domcontentloaded'
+        });
+    }
+
     async function TypeDate(browser, page) {
         let date = await UserInputDialog(browser, page, 'Start Date: \n');
         await page.click('#sDateTxt')
@@ -126,15 +119,17 @@ const text = require(__dirname + '/data/text.js');
         }
 
     async function ApplyNewDate(browser,page) {
-        await page.waitForSelector('#dateList1Body > tr:nth-child(1) > td.text-center')
+        let elements = await page.$x('/html/body/div[1]/div[4]/div[2]/form/div/div[1]/div/div[1]/div/div[1]/div[3]/table/tbody/tr[1]/td[1]')
+        elements[0].click()
+        // await page.waitForSelector('#dateList1Body > tr:nth-child(1) > td.text-center')
         await page.waitFor(1000)
-        await page.click('#dateList1Body > tr:nth-child(1) > td.text-center')
+        // await page.click('#dateList1Body > tr:nth-child(1) > td.text-center')
 
         await page.waitForSelector('#moveRightBtn > i')
         await page.waitFor(1000)
         await page.click('#moveRightBtn > i')
 
-        await page.waitForSelector('#btnApply')
+        // await page.waitForSelector('#btnApply')
         await page.waitFor(1000)
         await page.click('#btnApply')
     }
@@ -188,23 +183,23 @@ const text = require(__dirname + '/data/text.js');
 
     async function ConsoleHelp() {
         console.log(text.Help);
-        console.log(text.TypeDate);
-        console.log(text.ChangeDate);
-        console.log(text.fromDate);
-        console.log(text.logInButton);
-        console.log(text.ChangeProject);
-        console.log(text.ClearDates);
-        console.log(text.ViewGraph);
-        console.log(text.TurnOnRaw);
-        console.log(text.TurnOffRaw);
-        console.log(text.ApplyNewDate);
-        console.log(text.keypressEnter);
-        console.log(text.keypressEsc);
+        // console.log(text.TypeDate);
+        // console.log(text.ChangeDate);
+        // console.log(text.fromDate);
+        // console.log(text.logInButton);
+        // console.log(text.ChangeProject);
+        // console.log(text.ClearDates);
+        // console.log(text.ViewGraph);
+        // console.log(text.TurnOnRaw);
+        // console.log(text.TurnOffRaw);
+        // console.log(text.ApplyNewDate);
+        // console.log(text.keypressEnter);
+        // console.log(text.keypressEsc);
     }
 
     process.stdin.on('keypress', async (str, key) => {if (key.sequence === '\u0003') {await browser.close();process.exit();}
         if (['h'].includes(key.name))     {console.log('Help');try {await ConsoleHelp()} catch (error) {console.log('Caught:', error.message)}}
-        if (['up'].includes(key.name))    {console.log('TypeDate');try {await TypeDate(browser, page)} catch (error) {console.log('Caught:', error.message)}}
+        if (['up'].includes(key.name))    {console.log('enterUrl');try {await enterUrl(browser, page)} catch (error) {console.log('Caught:', error.message)}}
         if (['down'].includes(key.name))  {console.log('TypeDate');try {await TypeDate(browser, page)} catch (error) {console.log('Caught:', error.message)}}
         if (['left'].includes(key.name))  {console.log('ChangeDate');try {await ChangeDate(browser, page);} catch (error) {console.log('Caught:', error.message)}}
         if (['right'].includes(key.name)) {console.log('fromDate');try {await fromDate(browser, page);} catch (error) {console.log('Caught:', error.message)}}
