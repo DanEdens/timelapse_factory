@@ -9,5 +9,6 @@ module.exports = {
     ViewGraph: 'Key: g - Clicking View Graph..',
     TurnOnRaw: 'Key: r - Raw Input - On',
     TurnOffRaw: 'Key: t - Raw Input - Off',
-    ApplyNewDate: 'Key: j - Select the first value and Click on the arrow in Dates'
+    ApplyNewDate: 'Key: j - Select the first value and Click on the arrow in Dates',
+    keypressEnter: "Key Enter - Emulates a Enter keypress "
 }
