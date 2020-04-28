@@ -7,6 +7,7 @@ const text = require(__dirname + '/data/text.js');
 
 
 (async () => {
+    const verbose = true
     let wargs = puppeteer.defaultArgs()
 
     // function arrayRemove(arr, value) {
@@ -50,11 +51,11 @@ const text = require(__dirname + '/data/text.js');
             deviceScaleFactor: window.devicePixelRatio
         };
     });
+    // @formatter:off
 
-    console.log('Dimensions:', dimensions);
+    if (verbose) {console.log('Window Dimensions:', dimensions)}
     console.log('Interactive Browser session initiated:\n');
 
-    // @formatter:off
 
     async function logInButton(browser, page) {
         try {
@@ -104,9 +105,9 @@ const text = require(__dirname + '/data/text.js');
         await elements[0].click()
     }
 
-    async function keypressEsc(browser,page) {await page.keyboard.press("Esc")}
+    async function keypressEsc(browser,page) {await page.keyboard.type(String.fromCharCode(27));}
 
-    async function keypressEnter(browser,page) {await page.keyboard.press("Enter")}
+    async function keypressEnter(browser,page) {await page.keyboard.type(String.fromCharCode(13));}
 
     async function TypeDate(browser, page) {
         let date = await UserInputDialog(browser, page, 'Start Date: \n');
@@ -200,6 +201,7 @@ const text = require(__dirname + '/data/text.js');
         console.log(text.keypressEnter);
         console.log(text.keypressEsc);
     }
+
     process.stdin.on('keypress', async (str, key) => {if (key.sequence === '\u0003') {await browser.close();process.exit();}
         if (['h'].includes(key.name))     {console.log('Help');try {await ConsoleHelp()} catch (error) {console.log('Caught:', error.message)}}
         if (['up'].includes(key.name))    {console.log('TypeDate');try {await TypeDate(browser, page)} catch (error) {console.log('Caught:', error.message)}}
@@ -213,8 +215,8 @@ const text = require(__dirname + '/data/text.js');
         if (['r'].includes(key.name))     {console.log('TurnOnRaw');try {await TurnOnRaw();} catch (error) {console.log('Caught:', error.message)}}
         if (['t'].includes(key.name))     {console.log('TurnOffRaw');try {await TurnOffRaw();} catch (error) {console.log('Caught:', error.message)}}
         if (['j'].includes(key.name))     {console.log('ApplyNewDate');try {await ApplyNewDate(browser, page);} catch (error) {console.log('Caught:', error.message)}}
-        if (['Enter'].includes(key.name))     {console.log('keypressEnter');try {await keypressEnter(browser, page);} catch (error) {console.log('Caught:', error.message)}}
-        if (['Esc'].includes(key.name))     {console.log('keypressEsc');try {await keypressEsc(browser, page);} catch (error) {console.log('Caught:', error.message)}}
+        if (['e'].includes(key.name))     {console.log('keypressEnter');try {await keypressEnter(browser, page);} catch (error) {console.log('Caught:', error.message)}}
+        if (['s'].includes(key.name))     {console.log('keypressEsc');try {await keypressEsc(browser, page);} catch (error) {console.log('Caught:', error.message)}}
     }); // @formatter:on
     readline.emitKeypressEvents(process.stdin);
     process.stdin.setRawMode(true);
