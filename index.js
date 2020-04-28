@@ -104,9 +104,9 @@ const text = require(__dirname + '/data/text.js');
         await elements[0].click()
     }
 
-    async function keypressEnter(browser,page) {
-        await page.keyboard.press("Enter")
-    }
+    async function keypressEsc(browser,page) {await page.keyboard.press("Esc")}
+
+    async function keypressEnter(browser,page) {await page.keyboard.press("Enter")}
 
     async function TypeDate(browser, page) {
         let date = await UserInputDialog(browser, page, 'Start Date: \n');
@@ -198,6 +198,7 @@ const text = require(__dirname + '/data/text.js');
         console.log(text.TurnOffRaw);
         console.log(text.ApplyNewDate);
         console.log(text.keypressEnter);
+        console.log(text.keypressEsc);
     }
     process.stdin.on('keypress', async (str, key) => {if (key.sequence === '\u0003') {await browser.close();process.exit();}
         if (['h'].includes(key.name))     {console.log('Help');try {await ConsoleHelp()} catch (error) {console.log('Caught:', error.message)}}
@@ -213,6 +214,7 @@ const text = require(__dirname + '/data/text.js');
         if (['t'].includes(key.name))     {console.log('TurnOffRaw');try {await TurnOffRaw();} catch (error) {console.log('Caught:', error.message)}}
         if (['j'].includes(key.name))     {console.log('ApplyNewDate');try {await ApplyNewDate(browser, page);} catch (error) {console.log('Caught:', error.message)}}
         if (['Enter'].includes(key.name))     {console.log('keypressEnter');try {await keypressEnter(browser, page);} catch (error) {console.log('Caught:', error.message)}}
+        if (['Esc'].includes(key.name))     {console.log('keypressEsc');try {await keypressEsc(browser, page);} catch (error) {console.log('Caught:', error.message)}}
     }); // @formatter:on
     readline.emitKeypressEvents(process.stdin);
     process.stdin.setRawMode(true);
