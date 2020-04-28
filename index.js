@@ -197,22 +197,55 @@ const text = require(__dirname + '/data/text.js');
         // console.log(text.keypressEsc);
     }
 
-    process.stdin.on('keypress', async (str, key) => {if (key.sequence === '\u0003') {await browser.close();process.exit();}
-        if (['h'].includes(key.name))     {console.log('Help');try {await ConsoleHelp()} catch (error) {console.log('Caught:', error.message)}}
-        if (['up'].includes(key.name))    {console.log('enterUrl');try {await enterUrl(browser, page)} catch (error) {console.log('Caught:', error.message)}}
-        if (['down'].includes(key.name))  {console.log('TypeDate');try {await TypeDate(browser, page)} catch (error) {console.log('Caught:', error.message)}}
-        if (['left'].includes(key.name))  {console.log('ChangeDate');try {await ChangeDate(browser, page);} catch (error) {console.log('Caught:', error.message)}}
-        if (['right'].includes(key.name)) {console.log('fromDate');try {await fromDate(browser, page);} catch (error) {console.log('Caught:', error.message)}}
-        if (['l'].includes(key.name))     {console.log('logInButton');try {await logInButton(browser, page);} catch (error) {console.log('Caught:', error.message)}}
-        if (['p'].includes(key.name))     {console.log('ChangeProject');try {await ChangeProject(browser, page);} catch (error) {console.log('Caught:', error.message)}}
-        if (['c'].includes(key.name))     {console.log('ClearDate');try {await ClearDate(browser, page);} catch (error) {console.log('Caught:', error.message)}}
-        if (['g'].includes(key.name))     {console.log('ViewGraph');try {await ViewGraph(browser, page);} catch (error) {console.log('Caught:', error.message)}}
-        if (['r'].includes(key.name))     {console.log('TurnOnRaw');try {await TurnOnRaw();} catch (error) {console.log('Caught:', error.message)}}
-        if (['t'].includes(key.name))     {console.log('TurnOffRaw');try {await TurnOffRaw();} catch (error) {console.log('Caught:', error.message)}}
-        if (['j'].includes(key.name))     {console.log('ApplyNewDate');try {await ApplyNewDate(browser, page);} catch (error) {console.log('Caught:', error.message)}}
-        if (['e'].includes(key.name))     {console.log('keypressEnter');try {await keypressEnter(browser, page);} catch (error) {console.log('Caught:', error.message)}}
-        if (['s'].includes(key.name))     {console.log('keypressEsc');try {await keypressEsc(browser, page);} catch (error) {console.log('Caught:', error.message)}}
-    }); // @formatter:on
+
+    const keyMap = new Map();
+    keyMap.set('h', 'Help');
+    keyMap.set('up', 'enterUrl');
+    keyMap.set('down', 'TypeDate');
+    keyMap.set('left', 'ChangeDate');
+    keyMap.set('right', 'fromDate');
+    keyMap.set('l', 'logInButton');
+    keyMap.set('p', 'ChangeProject');
+    keyMap.set('c', 'ClearDate');
+    keyMap.set('g', 'ViewGraph');
+    keyMap.set('r', 'TurnOnRaw');
+    keyMap.set('t', 'TurnOffRaw');
+    keyMap.set('j', 'ApplyNewDate');
+    keyMap.set('e', 'keypressEnter');
+    keyMap.set('s', 'keypressEsc');
+
+    function matchedKey(key){
+        console.log('attempting function run for '+key)
+        key();
+    };
+
+    process.stdin.on('keypress', (str, key) => {
+        if (key.ctrl && key.name === 'c') {
+            process.exit();
+        } else {
+            if (keyMap.has(str)) {
+                matchedKey(keyMap.get(str));
+            } else {
+                console.log(`No symbol defined for "${str}" key.`);
+            }
+        }})
+    // process.stdin.on('keypress', async (str, key) => {if (key.sequence === '\u0003') {await browser.close();process.exit();}
+    //     if (['h'].includes(key.name))     {console.log('Help');try {await ConsoleHelp()} catch (error) {console.log('Caught:', error.message)}}
+    //     if (['up'].includes(key.name))    {console.log('enterUrl');try {await enterUrl(browser, page)} catch (error) {console.log('Caught:', error.message)}}
+    //     if (['down'].includes(key.name))  {console.log('TypeDate');try {await TypeDate(browser, page)} catch (error) {console.log('Caught:', error.message)}}
+    //     if (['left'].includes(key.name))  {console.log('ChangeDate');try {await ChangeDate(browser, page);} catch (error) {console.log('Caught:', error.message)}}
+    //     if (['right'].includes(key.name)) {console.log('fromDate');try {await fromDate(browser, page);} catch (error) {console.log('Caught:', error.message)}}
+    //     if (['l'].includes(key.name))     {console.log('logInButton');try {await logInButton(browser, page);} catch (error) {console.log('Caught:', error.message)}}
+    //     if (['p'].includes(key.name))     {console.log('ChangeProject');try {await ChangeProject(browser, page);} catch (error) {console.log('Caught:', error.message)}}
+    //     if (['c'].includes(key.name))     {console.log('ClearDate');try {await ClearDate(browser, page);} catch (error) {console.log('Caught:', error.message)}}
+    //     if (['g'].includes(key.name))     {console.log('ViewGraph');try {await ViewGraph(browser, page);} catch (error) {console.log('Caught:', error.message)}}
+    //     if (['r'].includes(key.name))     {console.log('TurnOnRaw');try {await TurnOnRaw();} catch (error) {console.log('Caught:', error.message)}}
+    //     if (['t'].includes(key.name))     {console.log('TurnOffRaw');try {await TurnOffRaw();} catch (error) {console.log('Caught:', error.message)}}
+    //     if (['j'].includes(key.name))     {console.log('ApplyNewDate');try {await ApplyNewDate(browser, page);} catch (error) {console.log('Caught:', error.message)}}
+    //     if (['e'].includes(key.name))     {console.log('keypressEnter');try {await keypressEnter(browser, page);} catch (error) {console.log('Caught:', error.message)}}
+    //     if (['s'].includes(key.name))     {console.log('keypressEsc');try {await keypressEsc(browser, page);} catch (error) {console.log('Caught:', error.message)}}
+    // });
+        // @formatter:on
     readline.emitKeypressEvents(process.stdin);
     process.stdin.setRawMode(true);
 
