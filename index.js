@@ -86,7 +86,7 @@ const text = require(__dirname + '/data/text.js');
         await page.click('#viewGraphBtn')
     }
 
-    async function ClearDates(browser, page) {
+    async function ClearDate(browser, page) {
         // clear default dates
         await page.waitForSelector('#formInner0 > div.graphButtons > div > div:nth-child(1)')
         await page.click('#formInner0 > .graphButtons > div > .graphButton:nth-child(1)')
@@ -110,13 +110,18 @@ const text = require(__dirname + '/data/text.js');
 
         await page.keyboard.down('Control')
         await page.keyboard.down('A')
+        await page.waitFor(5)
         await page.keyboard.up('A')
         await page.keyboard.up('Control')
 
         await page.waitFor(1000)
         await page.type('#sDateTxt', date)
-        await page.keyboard.press("Enter");
+        await page.waitFor(1000)
+        await page.keyboard.press("Enter")
+        }
 
+
+    async function ApplyNewDate(browser,page) {
         await page.waitForSelector('#dateList1Body > tr:nth-child(1) > td.text-center')
         await page.waitFor(1000)
         await page.click('#dateList1Body > tr:nth-child(1) > td.text-center')
@@ -188,6 +193,7 @@ const text = require(__dirname + '/data/text.js');
         console.log(text.ViewGraph);
         console.log(text.TurnOnRaw);
         console.log(text.TurnOffRaw);
+        console.log(text.ApplyNewDate);
     }
     process.stdin.on('keypress', async (str, key) => {if (key.sequence === '\u0003') {await browser.close();process.exit();}
         if (['h'].includes(key.name))     {console.log('Help');try {await ConsoleHelp()} catch (error) {console.log('Caught:', error.message)}}
@@ -197,10 +203,11 @@ const text = require(__dirname + '/data/text.js');
         if (['right'].includes(key.name)) {console.log('fromDate');try {await fromDate(browser, page);} catch (error) {console.log('Caught:', error.message)}}
         if (['l'].includes(key.name))     {console.log('logInButton');try {await logInButton(browser, page);} catch (error) {console.log('Caught:', error.message)}}
         if (['p'].includes(key.name))     {console.log('ChangeProject');try {await ChangeProject(browser, page);} catch (error) {console.log('Caught:', error.message)}}
-        if (['c'].includes(key.name))     {console.log('ClearDates');try {await ClearDates(browser, page);} catch (error) {console.log('Caught:', error.message)}}
+        if (['c'].includes(key.name))     {console.log('ClearDate');try {await ClearDate(browser, page);} catch (error) {console.log('Caught:', error.message)}}
         if (['g'].includes(key.name))     {console.log('ViewGraph');try {await ViewGraph(browser, page);} catch (error) {console.log('Caught:', error.message)}}
         if (['r'].includes(key.name))     {console.log('TurnOnRaw');try {await TurnOnRaw();} catch (error) {console.log('Caught:', error.message)}}
         if (['t'].includes(key.name))     {console.log('TurnOffRaw');try {await TurnOffRaw();} catch (error) {console.log('Caught:', error.message)}}
+        if (['j'].includes(key.name))     {console.log('ApplyNewDate');try {await ApplyNewDate()(browser, page);} catch (error) {console.log('Caught:', error.message)}}
     }); // @formatter:on
     readline.emitKeypressEvents(process.stdin);
     process.stdin.setRawMode(true);
