@@ -2,11 +2,14 @@ const Promise = require("bluebird");
 const puppeteer = require("puppeteer-extra");
 
 const text = require('./lib/text');
+const url = require('./lib/preseturls');
 import Repl from './lib/repl';
 import LineUnitizer from './lib/line-unitizer';
 
+global.verbose = true;
+
 (async () => {
-    const verbose = true
+
     const userdata = process.env.userdata
     const chromeexe = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe";
     let wargs = puppeteer.defaultArgs();
@@ -58,6 +61,7 @@ import LineUnitizer from './lib/line-unitizer';
     process.stdin
         .pipe(new LineUnitizer())
         .pipe(new Repl()
+                // @formatter:off
             .on("exit", function (args) {
                 console.log(args);
                 process.exit();
@@ -70,19 +74,21 @@ import LineUnitizer from './lib/line-unitizer';
                 var allcaps = args.map(s => s.toUpperCase()).join(" ");
                 console.log(allcaps);
             })
-            .on("url", async function (args) {
-                let url = await UserInputDialog(browser, page, "Input Url");
-                await page.goto(url, {
-                    waitUntil: 'domcontentloaded'
-                });
-            })
-            .on("login", async function (args) {
-                try {
+            // .on("url", async function (args) {await page.goto('$(url.$(args))', {waitUntil: 'domcontentloaded'});})
+            .on("login", async function (args) {try {
                     await page.waitForSelector('.main-panel > .content > #login > form > .btn')
                     await page.click('.main-panel > .content > #login > form > .btn')
-                } catch (error) {
-                    console.log('Caught:', error.message)
-                }
+                } catch (error) {console.log('Caught:', error.message)}})
+            .on("riverside", async function (args) {
+                // Navigate to Plot
+                await page.waitFor(1000)
+                await page.waitForSelector('.sidebar-wrapper > .nav > #menuProjects > a > p')
+                await page.click('.sidebar-wrapper > .nav > #menuProjects > a > p')
+
+                await page.hover('body > div.wrapper > div.sidePanel.ui-resizable > div.panelHeading')
+                await page.waitFor(1000)
+                await page.waitForSelector('.sidePanel > #panelInner > #projectList > .panelRow:nth-child(3) > .panelRowTxt2')
+                await page.click('.sidePanel > #panelInner > #projectList > .panelRow:nth-child(3) > .panelRowTxt2')
             })
             .on("setdate", async function (args) {
                 function formatDate(date) {
@@ -91,16 +97,13 @@ import LineUnitizer from './lib/line-unitizer';
                         day = '' + d.getDate(),
                         year = d.getFullYear();
 
-                    if (month.length < 2)
-                        month = '0' + month;
-                    if (day.length < 2)
-                        day = '0' + day;
+                    if (month.length < 2) month = '0' + month;
+                    if (day.length < 2) day = '0' + day;
 
                     return [year, month, day].join('-');
                 }
 
                 let date = formatDate(args)
-
                 await page.click('#sDateTxt')
                 await page.waitFor(5)
                 await page.keyboard.down('Control')
@@ -113,36 +116,6 @@ import LineUnitizer from './lib/line-unitizer';
                 await page.type('#sDateTxt', date)
                 await page.waitFor(1000)
                 await page.keyboard.press("Enter")
-            })
-            .on("setproj425", async function (args) {
-                // Navigate to Plot
-                await page.waitFor(1000)
-                await page.waitForSelector('.sidebar-wrapper > .nav > #menuProjects > a > p')
-                await page.click('.sidebar-wrapper > .nav > #menuProjects > a > p')
-
-                await page.hover('body > div.wrapper > div.sidePanel.ui-resizable > div.panelHeading')
-                await page.waitFor(1000)
-                await page.waitForSelector('.sidePanel > #panelInner > #projectList > .panelRow:nth-child(3) > .panelRowTxt2')
-                await page.click('.sidePanel > #panelInner > #projectList > .panelRow:nth-child(3) > .panelRowTxt2')
-            })
-            .on("plot", async function (args) {
-                await page.waitForSelector('#dialogSAA3Phase\ 5 > #formInner32 > .graphButtons > div > .graphButton:nth-child(1)')
-                await page.click('#dialogSAA3Phase\ 5 > #formInner32 > .graphButtons > div > .graphButton:nth-child(1)')
-
-                await page.waitForSelector('#dateList2Container > #dateList2 > #dateList2Body > tr > .text-center')
-                await page.click('#dateList2Container > #dateList2 > #dateList2Body > tr > .text-center')
-
-                await page.waitForSelector('.tab-content > #link1 #moveLeftBtn')
-                await page.click('.tab-content > #link1 #moveLeftBtn')
-
-                await page.waitForSelector('#dialogDelete > #formInner38 > form > .text-center > .form-group')
-                await page.click('#dialogDelete > #formInner38 > form > .text-center > .form-group')
-
-                await page.waitForSelector('#formInner38 #btnApply')
-                await page.click('#formInner38 #btnApply')
-
-                await page.waitForSelector('#link1 #sDateTxt')
-                await page.click('#link1 #sDateTxt')
             })
             .on("adddate", async function (args) {
                 await page.waitForSelector('#dateList1Container > #dateList1 > #dateList1Body > tr:nth-child(1) > .text-center')
@@ -181,20 +154,13 @@ import LineUnitizer from './lib/line-unitizer';
                 await page.waitForSelector('#viewGraphBtn')
                 await page.click('#viewGraphBtn')
             })
-            .on("click_Start", async function (args) {
+            .on("fixcal", async function (args) {
+                console.log('fixcal'); //TODO:delete
                 try {
                     const elements = await page.$x('/html/body/div[1]/div[4]/div[2]/form/div/div[1]/div/div[1]/div/div[1]/div[1]/label')
-                    await elements[0].click()
-                } catch (error) {
-                    console.log('Caught:', error.message)
-                }
-            })
-            .on("rawon", async function (args) {
-                process.stdin.setRawMode(true);
-            })
-            .on("rawoff", async function (args) {
-                process.stdin.setRawMode(false);
-            })
+                    await elements[0].click()} catch (error) {console.log('Caught:', error.message)}})
+            .on("rawon", async function (args) {process.stdin.setRawMode(true);})
+            .on("rawoff", async function (args) {process.stdin.setRawMode(false);})
             .on("apply", async function (args) {
                 const elements = await page.$x('/html/body/div[1]/div[4]/div[2]/form/div/div[1]/div/div[1]/div/div[1]/div[3]/table/tbody/tr[1]/td[2]/div')
                 await elements[0].click()
@@ -207,11 +173,22 @@ import LineUnitizer from './lib/line-unitizer';
                 await page.waitFor(1000)
                 await page.click('#btnApply')
             })
-            .on("key_enter", async function (args) {
-                await page.keyboard.type(String.fromCharCode(13));
-            })
-            .on("key-esc", async function (args) {
-                await page.keyboard.type(String.fromCharCode(27));
-            })
+            .on("key_enter", async function (args) {await page.keyboard.type(String.fromCharCode(13));})
+            .on("key-esc", async function (args) {await page.keyboard.type(String.fromCharCode(27));})
+            .on("togverb", async function (args) {if (global.verbose) {global.verbose = !global.verbose}})
+            .on("mix", async function (args) {{await page.goto(url.mix, {waitUntil: 'domcontentloaded'});}})
+            .on("qv", async function (args) {{await page.goto(url.qv, {waitUntil: 'domcontentloaded'});}})
+            .on("vortex", async function (args) {{await page.goto(url.vortex, {waitUntil: 'domcontentloaded'});}})
+            .on("capitol", async function (args) {{await page.goto(url.capitol, {waitUntil: 'domcontentloaded'});}})
+            .on("audi", async function (args) {{await page.goto(url.audi, {waitUntil: 'domcontentloaded'});}})
+            .on("facebook", async function (args) {{await page.goto(url.facebook, {waitUntil: 'domcontentloaded'});}})
+            .on("dash", async function (args) {{await page.goto(url.dash, {waitUntil: 'domcontentloaded'});}})
+            .on("dashui", async function (args) {{await page.goto(url.dashui, {waitUntil: 'domcontentloaded'});}})
+            .on("console", async function (args) {{await page.goto(url.console, {waitUntil: 'domcontentloaded'});}})
+            .on("certify", async function (args) {{await page.goto(url.certify, {waitUntil: 'domcontentloaded'});}})
+            .on("darkmode", async function (args) {{await page.goto(url.darkmode, {waitUntil: 'domcontentloaded'});}})
+            .on("sportal", async function (args) {{await page.goto(url.sportal, {waitUntil: 'domcontentloaded'});}})
+            .on("google", async function (args) {{await page.goto(url.google, {waitUntil: 'domcontentloaded'});}})
+            // @formatter:off
         );
 })();
