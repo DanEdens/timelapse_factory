@@ -8,15 +8,16 @@ import LineUnitizer from './lib/line-unitizer';
 (async () => {
     const verbose = true
     const userdata = process.env.userdata
-    const chromeexe = 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe';
+    const chromeexe = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe";
     let wargs = puppeteer.defaultArgs();
     wargs.push('--no-sandbox');
-    wargs.push('--executablePath: ' + chromeexe);
     wargs.push('--no-sync');
+    // wargs.push('--executablePath: ' + chromeexe);
     // wargs.push('--start-fullscreen');
     // wargs.push('--new-window');
     let browser = await puppeteer.launch({
         userDataDir: userdata,
+        executablePath: chromeexe,
         ignoreDefaultArgs: ['--headless', '--password-store=basic', '--disable-extensions', '--hide-scrollbars'],
         args: wargs,
     });
@@ -179,6 +180,14 @@ import LineUnitizer from './lib/line-unitizer';
                 await page.click('#objects > img:nth-child(1)')
                 await page.waitForSelector('#viewGraphBtn')
                 await page.click('#viewGraphBtn')
+            })
+            .on("click", async function (args) {
+                try {
+                    await page.waitForSelector(args)
+                    await page.click(args)
+                } catch (error) {
+                    console.log('Caught:', error.message)
+                }
             })
             .on("rawon", async function (args) {
                 process.stdin.setRawMode(true);
