@@ -1,0 +1,44 @@
+.on("raw", function (args) {
+                    let raw_mode;
+		                        if (raw_mode){
+					                        process.stdin.setRawMode(true);
+								                        let raw_mode = false
+											                    }else{
+													                            process.stdin.setRawMode(false);
+																                            let raw_mode = true
+																			                        }})
+
+
+																						    // Method 2
+																						        // process.stdin.on('keypress', (str, key) => {
+																							    //     if (key.ctrl && key.name === 'c') {
+																							        //         process.exit();
+																								    //     } else {
+																								        //         if (keyMap.has(str)) {
+																									    //             matchedKey(keyMap.get(str));
+																									        //         } else {
+																										    //             console.log(`No symbol defined for "${str}" key.`);
+																										        //         }
+																											    //     }})
+																											        // readline.emitKeypressEvents(process.stdin);
+																												    // process.stdin.setRawMode(true);
+
+const keyMap = new Map();
+    keyMap.set('h', 'Help');
+        keyMap.set('up', 'enterUrl');
+	    keyMap.set('down', 'TypeDate');
+	        keyMap.set('left', 'ChangeDate');
+		    keyMap.set('right', 'fromDate');
+		        keyMap.set('l', 'logInButton');
+			    keyMap.set('p', 'ChangeProject');
+			        keyMap.set('c', 'ClearDate');
+				    keyMap.set('g', 'ViewGraph');
+				        keyMap.set('r', 'TurnOnRaw');
+					    keyMap.set('t', 'TurnOffRaw');
+					        keyMap.set('j', 'ApplyNewDate');
+						    keyMap.set('e', 'keypressEnter');
+						        keyMap.set('s', 'keypressEsc');
+function matchedKey(key) {
+        console.log('attempting function run for ' + key)
+	        key();
+		    };
