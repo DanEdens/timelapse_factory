@@ -1,10 +1,10 @@
-import Promise from "bluebird";
-import readline from "readline";
-import puppeteer from "puppeteer";
+const Promise =require("bluebird");
+const readline =require("readline");
+const puppeteer =require("puppeteer-extra");
 
-import text from '.././data/text';
-import Repl from './repl';
-import LineUnitizer from './line-unitizer';
+const text = require('./lib/text');
+import Repl from './lib/repl';
+import LineUnitizer from './lib/line-unitizer';
 
 
 (async () => {
@@ -18,7 +18,7 @@ import LineUnitizer from './line-unitizer';
     // wargs.push('--new-window');
     let browser = await puppeteer.launch({
         userDataDir: userdata,
-        //executablePath: chromeexe,
+        // executablePath: chromeexe,
         ignoreDefaultArgs: ['--headless', '--password-store=basic', '--disable-extensions', '--hide-scrollbars'],
         args: wargs,
     });
@@ -242,16 +242,16 @@ import LineUnitizer from './line-unitizer';
                 }));
     //end
 
-    process.stdin.on('keypress', (str, key) => {
-        if (key.ctrl && key.name === 'c') {
-            process.exit();
-        } else {
-            if (keyMap.has(str)) {
-                matchedKey(keyMap.get(str));
-            } else {
-                console.log(`No symbol defined for "${str}" key.`);
-            }
-        }})
+    // process.stdin.on('keypress', (str, key) => {
+    //     if (key.ctrl && key.name === 'c') {
+    //         process.exit();
+    //     } else {
+    //         if (keyMap.has(str)) {
+    //             matchedKey(keyMap.get(str));
+    //         } else {
+    //             console.log(`No symbol defined for "${str}" key.`);
+    //         }
+    //     }})
     // process.stdin.on('keypress', async (str, key) => {if (key.sequence === '\u0003') {await browser.close();process.exit();}
     //     if (['h'].includes(key.name))     {console.log('Help');try {await ConsoleHelp()} catch (error) {console.log('Caught:', error.message)}}
     //     if (['up'].includes(key.name))    {console.log('enterUrl');try {await enterUrl(browser, page)} catch (error) {console.log('Caught:', error.message)}}
@@ -269,7 +269,7 @@ import LineUnitizer from './line-unitizer';
     //     if (['s'].includes(key.name))     {console.log('keypressEsc');try {await keypressEsc(browser, page);} catch (error) {console.log('Caught:', error.message)}}
     // });
         // @formatter:on
-    readline.emitKeypressEvents(process.stdin);
-    process.stdin.setRawMode(true);
+    // readline.emitKeypressEvents(process.stdin);
+    // process.stdin.setRawMode(true);
 
 })();

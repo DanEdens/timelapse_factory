@@ -1,3 +1,3 @@
 cls 
 taskkill /F /IM chrome.exe
-node lib\index.js
+node -r esm index.js
