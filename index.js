@@ -172,7 +172,7 @@ import LineUnitizer from './lib/line-unitizer';
                 const elements = await page.$x('/html/body/div[1]/div[5]/div[2]/form/div/div/button[2]')
                 await elements[0].click()
             })
-            .on("ViewGraph", async function (args) {
+            .on("graph", async function (args) {
                 //Preform this function during Raw Input Interactive browser session
 
                 await page.waitFor(1000)
@@ -181,10 +181,10 @@ import LineUnitizer from './lib/line-unitizer';
                 await page.waitForSelector('#viewGraphBtn')
                 await page.click('#viewGraphBtn')
             })
-            .on("click", async function (args) {
+            .on("click_Start", async function (args) {
                 try {
-                    await page.waitForSelector(args)
-                    await page.click(args)
+                    const elements = await page.$x('/html/body/div[1]/div[4]/div[2]/form/div/div[1]/div/div[1]/div/div[1]/div[1]/label')
+                    await elements[0].click()
                 } catch (error) {
                     console.log('Caught:', error.message)
                 }
@@ -196,17 +196,14 @@ import LineUnitizer from './lib/line-unitizer';
                 process.stdin.setRawMode(false);
             })
             .on("apply", async function (args) {
-                let elements = await page.$x('/html/body/div[1]/div[4]/div[2]/form/div/div[1]/div/div[1]/div/div[1]/div[3]/table/tbody/tr[1]/td[1]')
-                elements[0].click()
-                // await page.waitForSelector('#dateList1Body > tr:nth-child(1) > td.text-center')
-                await page.waitFor(1000)
-                // await page.click('#dateList1Body > tr:nth-child(1) > td.text-center')
+                const elements = await page.$x('/html/body/div[1]/div[4]/div[2]/form/div/div[1]/div/div[1]/div/div[1]/div[3]/table/tbody/tr[1]/td[2]/div')
+                await elements[0].click()
+                await page.waitFor(500)
 
                 await page.waitForSelector('#moveRightBtn > i')
                 await page.waitFor(1000)
                 await page.click('#moveRightBtn > i')
 
-                // await page.waitForSelector('#btnApply')
                 await page.waitFor(1000)
                 await page.click('#btnApply')
             })
