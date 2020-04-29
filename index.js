@@ -133,46 +133,42 @@ global.verbose = true;
                 await page.waitForSelector('#formInner0 > div.graphButtons > div > div:nth-child(1)')
                 await page.click('#formInner0 > .graphButtons > div > .graphButton:nth-child(1)')
 
-                await page.waitFor(3000)
+                await page.waitFor(2000)
                 await page.waitForSelector('form #list2 #selectAllBtn')
                 await page.click('form #list2 #selectAllBtn')
 
-                await page.waitFor(2000)
+                await page.waitFor(1000)
                 await page.waitForSelector('form #deleteBtn')
                 await page.click('form #deleteBtn')
 
-                await page.waitFor(2000)
+                await page.waitFor(1000)
                 const elements = await page.$x('/html/body/div[1]/div[5]/div[2]/form/div/div/button[2]')
                 await elements[0].click()
             })
             .on("graph", async function (args) {
-                //Preform this function during Raw Input Interactive browser session
-
-                await page.waitFor(1000)
+                await page.waitFor(500)
                 await page.waitForSelector('#objects > img:nth-child(1)')
                 await page.click('#objects > img:nth-child(1)')
                 await page.waitForSelector('#viewGraphBtn')
                 await page.click('#viewGraphBtn')
             })
-            .on("fixcal", async function (args) {
-                console.log('fixcal'); //TODO:delete
-                try {
-                    const elements = await page.$x('/html/body/div[1]/div[4]/div[2]/form/div/div[1]/div/div[1]/div/div[1]/div[1]/label')
-                    await elements[0].click()} catch (error) {console.log('Caught:', error.message)}})
-            .on("rawon", async function (args) {process.stdin.setRawMode(true);})
-            .on("rawoff", async function (args) {process.stdin.setRawMode(false);})
             .on("apply", async function (args) {
                 const elements = await page.$x('/html/body/div[1]/div[4]/div[2]/form/div/div[1]/div/div[1]/div/div[1]/div[3]/table/tbody/tr[1]/td[2]/div')
                 await elements[0].click()
                 await page.waitFor(500)
 
                 await page.waitForSelector('#moveRightBtn > i')
-                await page.waitFor(1000)
+                await page.waitFor(500)
                 await page.click('#moveRightBtn > i')
 
-                await page.waitFor(1000)
+                await page.waitFor(500)
                 await page.click('#btnApply')
             })
+            .on("fixcal", async function (args) {try {
+                    const elements = await page.$x('/html/body/div[1]/div[4]/div[2]/form/div/div[1]/div/div[1]/div/div[1]/div[1]/label')
+                    await elements[0].click()} catch (error) {console.log('Caught:', error.message)}})
+            .on("rawon", async function (args) {process.stdin.setRawMode(true);})
+            .on("rawoff", async function (args) {process.stdin.setRawMode(false);})
             .on("key_enter", async function (args) {await page.keyboard.type(String.fromCharCode(13));})
             .on("key-esc", async function (args) {await page.keyboard.type(String.fromCharCode(27));})
             .on("togverb", async function (args) {if (global.verbose) {global.verbose = !global.verbose}})
