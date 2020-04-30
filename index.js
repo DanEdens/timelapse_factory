@@ -1,13 +1,10 @@
-const Promise = require("bluebird");
-const puppeteer = require("puppeteer-extra");
+const Promise = require('bluebird')
+const puppeteer = require('puppeteer-extra')
 
-const url = require('./lib/preseturls');
-import Repl from './lib/repl';
-import LineUnitizer from './lib/line-unitizer';
-// @formatter:off
 const argv = require('yargs').argv
 
-function group(msg) {if (debug > '0') {console.group('Group: ' + msg)}};
+const text = require('./lib/text')
+const url = require('./lib/preseturls')
 import Repl from './lib/repl'
 import LineUnitizer from './lib/line-unitizer'
 
