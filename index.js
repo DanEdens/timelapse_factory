@@ -8,25 +8,25 @@ const url = require('./lib/preseturls')
 import Repl from './lib/repl'
 import LineUnitizer from './lib/line-unitizer'
 
-if (argv.debug) {global.debug = argv.debug} else {global.debug = 0} // -d
-if (argv.verbose) {global.verbose = true} else {global.verbose = false} // -v
-if (argv.preformance) {global.preformance = true} else {global.preformance = false} // -s
+// if (argv.debug) {global.debug = argv.debug} else {global.debug = 0} // -d
+// if (argv.verbose) {global.verbose = true} else {global.verbose = false} // -v
+// if (argv.preformance) {global.preformance = true} else {global.preformance = false} // -s
 
-function group (msg) {if (debug > '0') {console.group('Group: ' + msg)}}
+function group(msg) {if (debug > '0') {console.group('Group: ' + msg)}}
 
-function groupend (msg) {
+function groupend(msg) {
     if (debug > '0') {
         console.groupEnd()
         console.log('G End: ' + msg + '\n')
     }
 }
 
-function verboselog (msg) {if (verbose) {Debug.print(msg)}}
+function verboselog(msg) {if (verbose) {Debug.print(msg)}}
 
-function performance () {performance()}
+function performance() {console.log(new Date().toISOString())}
 
 class Debug {
-    static async print (data, file) {
+    static async print(data, file) {
         if (file) {} else {file = 'Log.txt'}
         try {
             if (debug === 0) {
@@ -45,16 +45,7 @@ class Debug {
 
     };
 
-    static async askQuestion (query) {
-        const rl = readline.createInterface({ input: process.stdin, output: process.stdout })
-        return new Promise(resolve => rl.question(query, ans => {
-            rl.close()
-            verboselog(ans)
-            resolve(ans)
-        }))
-    }
-
-    static async checkExists (file) {
+    static async checkExists(file) {
         let time = new Date().toISOString()
         file.forEach(function (item) {
             try {
@@ -77,13 +68,8 @@ class Debug {
 
     const userdata = process.env.userdata
     const chromeexe = 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'
-    if (!x) {
-        let x = 50
-    }
-
-    if (!y) {
-        let y = 50
-    }
+    // if (!x) {let x = 50}
+    // if (!y) {let y = 50}
 
     let wargs = puppeteer.defaultArgs()
     wargs.push('--no-sandbox')
@@ -108,6 +94,7 @@ class Debug {
     await page.goto('https://quickview.geo-instruments.com/index.php',
         { waitUntil: 'domcontentloaded' })
     await page.setDefaultNavigationTimeout(0)
+    const session = await page.target().createCDPSession()
     const dimensions = await page.evaluate(() => {
         return {
             width: document.documentElement.clientWidth,
@@ -118,17 +105,6 @@ class Debug {
 
     if (verbose) {console.log('Window Dimensions:', dimensions)}
     console.log('Interactive Browser session initiated:\n')
-
-    async function UserInputDialog (browser, page, value) {
-        return new Promise(async (resolve) => {
-            const result = await page.evaluate((msg) => {
-                return new Promise((resolve) => {
-                    resolve(prompt(msg))
-                })
-            }, value)
-            resolve(result)
-        })
-    }
 
     group('Main - REPL')
     process.stdin.pipe(new LineUnitizer()).pipe(new Repl()
@@ -173,7 +149,7 @@ class Debug {
         }).on('setdate', async function (args) {
             if (verbose) {group('set Date')}
 
-            function formatDate (date) {
+            function formatDate(date) {
                 let d = new Date(date),
                     month = '' + (d.getMonth() + 1),
                     day = '' + d.getDate(),
@@ -274,6 +250,10 @@ class Debug {
             process.stdin.setRawMode(false)
         }).on('key_enter', async function (args) {
             await page.keyboard.type(String.fromCharCode(13))
+        }).on('zoom', async function (args) {
+            await session.send('Emulation.setPageScaleFactor', {
+                pageScaleFactor: 4, // 400%
+            })
         }).on('key-esc', async function (args) {
             await page.keyboard.type(String.fromCharCode(27))
         }).on('togverb', async function (args) {
@@ -306,12 +286,6 @@ class Debug {
             await page.goto(url.sportal, { waitUntil: 'domcontentloaded' })
         }).on('google', async function (args) {
             await page.goto(url.google, { waitUntil: 'domcontentloaded' })
-        }).on('ask', async function (args) {
-            let ans = await Debug.askQuestion(args)
-            console.log(ans)
-        }).on('askdio', async function (args) {
-            let ans = await UserInputDialog(args)
-            console.log(ans)
         }),
     )
 })()
