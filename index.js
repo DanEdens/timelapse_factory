@@ -10,7 +10,10 @@ import LineUnitizer from './lib/line-unitizer'
 
 // if (argv.debug) {global.debug = argv.debug} else {global.debug = 0} // -d
 // if (argv.verbose) {global.verbose = true} else {global.verbose = false} // -v
-// if (argv.preformance) {global.preformance = true} else {global.preformance = false} // -s
+if (argv.preformance) {global.preformance = true} else {global.preformance = false} // -s
+global.verbose = false
+global.debug = 0
+global.date = '2019-08-26'
 
 function group(msg) {if (debug > '0') {console.group('Group: ' + msg)}}
 
@@ -23,7 +26,7 @@ function groupend(msg) {
 
 function verboselog(msg) {if (verbose) {Debug.print(msg)}}
 
-function performance() {console.log(new Date().toISOString())}
+function performance() {if (global.performance) {console.log(new Date().toISOString())}}
 
 class Debug {
     static async print(data, file) {
@@ -75,8 +78,8 @@ class Debug {
     wargs.push('--no-sandbox')
     wargs.push('--no-sync')
     // wargs.push('--executablePath: ' + chromeexe);
-    // wargs.push('--start-fullscreen');
-    // wargs.push('--new-window');
+    wargs.push('--start-fullscreen')
+    wargs.push('--new-window')
     let browser = await puppeteer.launch({
         userDataDir: userdata,
         // windowPosition: '${x},${y}',
@@ -89,8 +92,7 @@ class Debug {
         args: wargs,
     })
     const page = await browser.newPage()
-    await page.setViewport({ width: 1920, height: 980 })
-    //deviceScaleFactor: .6,
+    await page.setViewport({ width: 1900, deviceScaleFactor: 1, height: 1080 })
     await page.goto('https://quickview.geo-instruments.com/index.php',
         { waitUntil: 'domcontentloaded' })
     await page.setDefaultNavigationTimeout(0)
@@ -159,7 +161,7 @@ class Debug {
                 return [year, month, day].join('-')
             }
 
-            let date = formatDate(args)
+            global.date = formatDate(args)
             await page.click('#sDateTxt')
             await page.waitFor(5)
             await page.keyboard.down('Control')
@@ -169,10 +171,15 @@ class Debug {
             await page.keyboard.up('Control')
 
             await page.waitFor(1000)
-            await page.type('#sDateTxt', date)
+            await page.type('#sDateTxt', global.date)
+            console.log(global.date) //TODO:delete
             await page.waitFor(1000)
             await page.keyboard.press('Enter')
-
+            try {
+                const elements = await page.$x(
+                    '/html/body/div[1]/div[4]/div[2]/form/div/div[1]/div/div[1]/div/div[1]/div[1]/label')
+                await elements[0].click()
+            } catch (error) {console.log('Caught:', error.message)}
             if (verbose) {groupend('set Date')}
         }).on('adddate', async function (args) {
 
@@ -213,6 +220,9 @@ class Debug {
                 '/html/body/div[1]/div[5]/div[2]/form/div/div/button[2]')
             await elements[0].click()
             if (verbose) {groupend('clear old dates')}
+        }).on('displayDate', async function (args) {
+            let elements = await page.$x('/html/body/div[2]/div[8]/div[1]/span')
+            await elements[0].click()
         }).on('graph', async function (args) {
             if (verbose) {group('nav to graph')}
             await page.waitFor(500)
@@ -251,15 +261,17 @@ class Debug {
         }).on('key_enter', async function (args) {
             await page.keyboard.type(String.fromCharCode(13))
         }).on('zoom', async function (args) {
+            let sum = args.map(Number).reduce((a, b) => a + b, 0)
             await session.send('Emulation.setPageScaleFactor', {
-                pageScaleFactor: 4, // 400%
+                pageScaleFactor: sum,
             })
         }).on('key-esc', async function (args) {
             await page.keyboard.type(String.fromCharCode(27))
         }).on('togverb', async function (args) {
             if (global.verbose) {global.verbose = !global.verbose}
         }).on('screenshot', async function (args) {
-            await page.screenshot({ path: global.date + '.png' })
+            await page.screenshot({ path: '.\\data\\Screenshots\\' + global.date + '.png' })
+            console.log(global.date + '.png') //TODO:delete
         }).on('mix', async function (args) {
             await page.goto(url.mix, { waitUntil: 'domcontentloaded' })
         }).on('qv', async function (args) {
