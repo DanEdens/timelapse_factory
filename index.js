@@ -1,6 +1,6 @@
 const Promise = require('bluebird')
 const puppeteer = require('puppeteer-extra')
-const readline = require('readline')
+
 const argv = require('yargs').argv
 
 const text = require('./lib/text')
@@ -105,10 +105,33 @@ class Debug {
         }
     })
 
+    group('Main - REPL')
+
     if (verbose) {console.log('Window Dimensions:', dimensions)}
     console.log('Interactive Browser session initiated:\n')
 
-    group('Main - REPL')
+    async function clearDates() {
+        if (verbose) {group('clear old dates')}
+        await page.waitForSelector(
+            '#formInner0 > div.graphButtons > div > div:nth-child(1)')
+        await page.click(
+            '#formInner0 > .graphButtons > div > .graphButton:nth-child(1)')
+
+        await page.waitFor(2000)
+        await page.waitForSelector('form #list2 #selectAllBtn')
+        await page.click('form #list2 #selectAllBtn')
+
+        await page.waitFor(1000)
+        await page.waitForSelector('form #deleteBtn')
+        await page.click('form #deleteBtn')
+
+        await page.waitFor(1000)
+        const elements = await page.$x(
+            '/html/body/div[1]/div[5]/div[2]/form/div/div/button[2]')
+        await elements[0].click()
+        if (verbose) {groupend('clear old dates')}
+    }
+
     process.stdin.pipe(new LineUnitizer()).pipe(new Repl()
         .on('exit', function (args) {
             if (verbose) {group('exitmsg')}
@@ -201,25 +224,7 @@ class Debug {
             if (verbose) {groupend('add date')}
         }).on('clear', async function (args) {
             // clear default dates
-            if (verbose) {group('clear old dates')}
-            await page.waitForSelector(
-                '#formInner0 > div.graphButtons > div > div:nth-child(1)')
-            await page.click(
-                '#formInner0 > .graphButtons > div > .graphButton:nth-child(1)')
-
-            await page.waitFor(2000)
-            await page.waitForSelector('form #list2 #selectAllBtn')
-            await page.click('form #list2 #selectAllBtn')
-
-            await page.waitFor(1000)
-            await page.waitForSelector('form #deleteBtn')
-            await page.click('form #deleteBtn')
-
-            await page.waitFor(1000)
-            const elements = await page.$x(
-                '/html/body/div[1]/div[5]/div[2]/form/div/div/button[2]')
-            await elements[0].click()
-            if (verbose) {groupend('clear old dates')}
+            await clearDates()
         }).on('displayDate', async function (args) {
             let elements = await page.$x('/html/body/div[2]/div[8]/div[1]/span')
             await elements[0].click()
@@ -258,27 +263,32 @@ class Debug {
         }).on('rawoff', async function (args) {
             if (verbose) {groupend('rawMode')}
             process.stdin.setRawMode(false)
-        }).on('key_enter', async function (args) {await page.keyboard.type(String.fromCharCode(13))
+        }).on('key_enter', async function (args) {
+            await page.keyboard.type(String.fromCharCode(13))
         }).on('zoom', async function (args) {
             let sum = args.map(Number).reduce((a, b) => a + b, 0)
-            await session.send('Emulation.setPageScaleFactor', { pageScaleFactor: sum, })
+            await session.send('Emulation.setPageScaleFactor', { pageScaleFactor: sum })
         }).on('key-esc', async function (args) {
             await page.keyboard.type(String.fromCharCode(27))
         }).on('togverb', async function (args) {
             global.verbose = !(global.verbose)
         }).on('screenshot', async function (args) {
             await page.screenshot({ path: '.\\data\\Screenshots\\' + global.date + '.png' })
-            console.log(global.date + '.png') //TODO:delete
-        }).on('mix', async function (args) {
-            await page.goto(url.mix, { waitUntil: 'domcontentloaded' })
-        }).on('qv', async function (args) {
-            await page.goto(url.qv, { waitUntil: 'domcontentloaded' })
-        }).on('vortex', async function (args) {
-            await page.goto(url.vortex, { waitUntil: 'domcontentloaded' })
-        }).on('capitol', async function (args) {
-            await page.goto(url.capitol, { waitUntil: 'domcontentloaded' })
-        }).on('audi', async function (args) {
-            await page.goto(url.audi, { waitUntil: 'domcontentloaded' })
+            verboselog(global.date + '.png')
+        }).on('open', async function (args) {
+            const { exec } = require('child_process')
+            exec('.\\data\\Screenshots\\' + global.date + '.png', (err, stdout, stderr) => {
+                if (err) {console.error(err)} else {}
+            }).on('mix', async function (args) {
+                await page.goto(url.mix, { waitUntil: 'domcontentloaded' })
+            }).on('qv', async function (args) {
+                await page.goto(url.qv, { waitUntil: 'domcontentloaded' })
+            }).on('vortex', async function (args) {
+                await page.goto(url.vortex, { waitUntil: 'domcontentloaded' })
+            }).on('capitol', async function (args) {
+                await page.goto(url.capitol, { waitUntil: 'domcontentloaded' })
+            }).on('audi', async function (args) {
+                await page.goto(url.audi, { waitUntil: 'domcontentloaded' })
         }).on('facebook', async function (args) {
             await page.goto(url.facebook, { waitUntil: 'domcontentloaded' })
         }).on('dash', async function (args) {
