@@ -1,6 +1,6 @@
 const Promise = require('bluebird')
 const puppeteer = require('puppeteer-extra')
-
+const readline = require('readline')
 const argv = require('yargs').argv
 
 const text = require('./lib/text')
@@ -258,17 +258,14 @@ class Debug {
         }).on('rawoff', async function (args) {
             if (verbose) {groupend('rawMode')}
             process.stdin.setRawMode(false)
-        }).on('key_enter', async function (args) {
-            await page.keyboard.type(String.fromCharCode(13))
+        }).on('key_enter', async function (args) {await page.keyboard.type(String.fromCharCode(13))
         }).on('zoom', async function (args) {
             let sum = args.map(Number).reduce((a, b) => a + b, 0)
-            await session.send('Emulation.setPageScaleFactor', {
-                pageScaleFactor: sum,
-            })
+            await session.send('Emulation.setPageScaleFactor', { pageScaleFactor: sum, })
         }).on('key-esc', async function (args) {
             await page.keyboard.type(String.fromCharCode(27))
         }).on('togverb', async function (args) {
-            if (global.verbose) {global.verbose = !global.verbose}
+            global.verbose = !(global.verbose)
         }).on('screenshot', async function (args) {
             await page.screenshot({ path: '.\\data\\Screenshots\\' + global.date + '.png' })
             console.log(global.date + '.png') //TODO:delete
