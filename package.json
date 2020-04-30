@@ -2,9 +2,9 @@
   "name": "timelapse_factory",
   "version": "1.0.0",
   "description": "",
-  "main": "lib/index.js",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "run": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -17,15 +17,17 @@
   },
   "homepage": "https://github.com/DanEdens/timelapse_factory#readme",
   "dependencies": {
-    "async-mqtt": "2.5.0",
+    "argv": "0.0.2",
     "bluebird": "3.7.2",
     "esm": "3.2.25",
     "got": "11.0.2",
     "puppeteer": "3.0.0",
-    "readline": "1.3.0"
+    "readline": "1.3.0",
+    "yargs": "15.3.1"
   },
   "devDependencies": {
     "puppeteer-extra": "3.1.9",
+    "async-mqtt": "2.5.0",
     "puppeteer-extra-plugin-adblocker": "2.11.3",
     "puppeteer-extra-plugin-stealth": "2.4.9",
     "sprintf": "0.1.5",
