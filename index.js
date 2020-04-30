@@ -12,6 +12,14 @@ global.verbose = true;
 
     const userdata = process.env.userdata
     const chromeexe = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe";
+    if (!x) {
+        let x = 50
+    }
+    ;
+    if (!y) {
+        let y = 50
+    }
+    ;
     let wargs = puppeteer.defaultArgs();
     wargs.push('--no-sandbox');
     wargs.push('--no-sync');
@@ -20,6 +28,7 @@ global.verbose = true;
     // wargs.push('--new-window');
     let browser = await puppeteer.launch({
         userDataDir: userdata,
+        // windowPosition: '${x},${y}',
         executablePath: chromeexe,
         ignoreDefaultArgs: ['--headless', '--password-store=basic', '--disable-extensions', '--hide-scrollbars'],
         args: wargs,
@@ -46,6 +55,7 @@ global.verbose = true;
         console.log('Window Dimensions:', dimensions)
     }
     console.log('Interactive Browser session initiated:\n')
+
 
     async function UserInputDialog(browser, page, value) {
         return new Promise(async (resolve) => {
@@ -172,6 +182,7 @@ global.verbose = true;
             .on("key_enter", async function (args) {await page.keyboard.type(String.fromCharCode(13));})
             .on("key-esc", async function (args) {await page.keyboard.type(String.fromCharCode(27));})
             .on("togverb", async function (args) {if (global.verbose) {global.verbose = !global.verbose}})
+            .on("screenshot", async function (args) {await page.screenshot({path: date+".png"});})
             .on("mix", async function (args) {{await page.goto(url.mix, {waitUntil: 'domcontentloaded'});}})
             .on("qv", async function (args) {{await page.goto(url.qv, {waitUntil: 'domcontentloaded'});}})
             .on("vortex", async function (args) {{await page.goto(url.vortex, {waitUntil: 'domcontentloaded'});}})

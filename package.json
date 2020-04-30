@@ -27,6 +27,8 @@
   "devDependencies": {
     "puppeteer-extra": "3.1.9",
     "puppeteer-extra-plugin-adblocker": "2.11.3",
-    "puppeteer-extra-plugin-stealth": "2.4.9"
+    "puppeteer-extra-plugin-stealth": "2.4.9",
+    "sprintf": "0.1.5",
+    "sprintf-js": "1.1.2"
   }
 }
