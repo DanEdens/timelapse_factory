@@ -3,16 +3,16 @@ const puppeteer = require('puppeteer-extra')
 
 const argv = require('yargs').argv
 
+const qv = require('./lib/qv_manipulator');
 const text = require('./lib/text')
 const url = require('./lib/preseturls')
 import Repl from './lib/repl'
 import LineUnitizer from './lib/line-unitizer'
 
-// if (argv.debug) {global.debug = argv.debug} else {global.debug = 0} // -d
-// if (argv.verbose) {global.verbose = true} else {global.verbose = false} // -v
-if (argv.preformance) {global.preformance = true} else {global.preformance = false} // -s
-global.verbose = false
-global.debug = 0
+
+if (argv.debug) {global.debug = argv.debug} else {global.debug = 0} // -d
+global.verbose = argv.verbose
+global.preformance = argv.preformance
 global.date = '2019-08-26'
 
 function group(msg) {if (debug > '0') {console.group('Group: ' + msg)}}
@@ -39,13 +39,8 @@ class Debug {
                 file.write(data)
             } else if (debug === 2) {
                 console.log(data)
-            } else if (debug === 3) {
-
-            }
+            } else if (debug === 3) {}
         } catch (error) {console.log('Caught:', error.message)}
-
-        performance()
-
     };
 
     static async checkExists(file) {
@@ -289,22 +284,22 @@ class Debug {
                 await page.goto(url.capitol, { waitUntil: 'domcontentloaded' })
             }).on('audi', async function (args) {
                 await page.goto(url.audi, { waitUntil: 'domcontentloaded' })
-        }).on('facebook', async function (args) {
-            await page.goto(url.facebook, { waitUntil: 'domcontentloaded' })
-        }).on('dash', async function (args) {
-            await page.goto(url.dash, { waitUntil: 'domcontentloaded' })
-        }).on('dashui', async function (args) {
-            await page.goto(url.dashui, { waitUntil: 'domcontentloaded' })
-        }).on('console', async function (args) {
-            await page.goto(url.console, { waitUntil: 'domcontentloaded' })
-        }).on('certify', async function (args) {
-            await page.goto(url.certify, { waitUntil: 'domcontentloaded' })
-        }).on('darkmode', async function (args) {
-            await page.goto(url.darkmode, { waitUntil: 'domcontentloaded' })
-        }).on('sportal', async function (args) {
-            await page.goto(url.sportal, { waitUntil: 'domcontentloaded' })
-        }).on('google', async function (args) {
-            await page.goto(url.google, { waitUntil: 'domcontentloaded' })
-        }),
-    )
+            }).on('facebook', async function (args) {
+                await page.goto(url.facebook, { waitUntil: 'domcontentloaded' })
+            }).on('dash', async function (args) {
+                await page.goto(url.dash, { waitUntil: 'domcontentloaded' })
+            }).on('dashui', async function (args) {
+                await page.goto(url.dashui, { waitUntil: 'domcontentloaded' })
+            }).on('console', async function (args) {
+                await page.goto(url.console, { waitUntil: 'domcontentloaded' })
+            }).on('certify', async function (args) {
+                await page.goto(url.certify, { waitUntil: 'domcontentloaded' })
+            }).on('darkmode', async function (args) {
+                await page.goto(url.darkmode, { waitUntil: 'domcontentloaded' })
+            }).on('sportal', async function (args) {
+                await page.goto(url.sportal, { waitUntil: 'domcontentloaded' })
+            }).on('google', async function (args) {
+                await page.goto(url.google, { waitUntil: 'domcontentloaded' })
+            }),
+        )
 })()
