@@ -9,7 +9,6 @@ const url = require('./lib/preseturls')
 import Repl from './lib/repl'
 import LineUnitizer from './lib/line-unitizer'
 
-
 if (argv.debug) {global.debug = argv.debug} else {global.debug = 0} // -d
 global.verbose = argv.verbose
 global.preformance = argv.preformance
@@ -274,6 +273,7 @@ class Debug {
             const { exec } = require('child_process')
             exec('.\\data\\Screenshots\\' + global.date + '.png', (err, stdout, stderr) => {
                 if (err) {console.error(err)} else {}
+            })
             }).on('mix', async function (args) {
                 await page.goto(url.mix, { waitUntil: 'domcontentloaded' })
             }).on('qv', async function (args) {
@@ -300,6 +300,6 @@ class Debug {
                 await page.goto(url.sportal, { waitUntil: 'domcontentloaded' })
             }).on('google', async function (args) {
                 await page.goto(url.google, { waitUntil: 'domcontentloaded' })
-            }),
+            })
         )
 })()
