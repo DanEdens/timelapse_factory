@@ -1,13 +1,14 @@
+import Repl from './lib/repl'
+import LineUnitizer from './lib/line-unitizer'
+import * as input from './lib/input'
+import * as qv from './lib/qv'
+import * as text from './lib/text'
+import * as url from './lib/preseturls'
+
 const Promise = require('bluebird')
 const puppeteer = require('puppeteer-extra')
 
 const argv = require('yargs').argv
-
-const qv = require('./lib/qv')
-const text = require('./lib/text')
-const url = require('./lib/preseturls')
-import Repl from './lib/repl'
-import LineUnitizer from './lib/line-unitizer'
 
 if (argv.debug) {global.debug = argv.debug} else {global.debug = 0} // -d
 global.verbose = argv.verbose
@@ -157,12 +158,9 @@ class Debug {
         }).on('fixcal', async function (args) {
             await qv.fixCalender(browser, page)
         }).on('rawon', async function (args) {
-            if (verbose) {group('rawMode')}
-            process.stdin.setRawMode(true)
-            console.log('Raw mode ---')
+            await input.rawon()
         }).on('rawoff', async function (args) {
-            if (verbose) {groupend('rawMode')}
-            process.stdin.setRawMode(false)
+            await input.rawOff()
         }).on('key_enter', async function (args) {
             await qv.key_enter(browser, page)
         }).on('zoom', async function (args) {
