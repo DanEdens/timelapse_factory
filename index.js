@@ -3,7 +3,7 @@ const puppeteer = require('puppeteer-extra')
 
 const argv = require('yargs').argv
 
-const qv = require('./lib/qv_manipulator');
+const qv = require('./lib/qv')
 const text = require('./lib/text')
 const url = require('./lib/preseturls')
 import Repl from './lib/repl'
@@ -51,10 +51,8 @@ class Debug {
                 console.log('Created File at:\n' + item)
                 fs.writeFileSync(item, 'Created on: ' + time, { flag: 'w' },
                     function (err) {if (err) throw err})
-                return
             }
         })
-        return
     }
 }
 
@@ -137,119 +135,27 @@ class Debug {
         }).on('add', function (args) {
             let sum = args.map(Number).reduce((a, b) => a + b, 0)
             console.log('add result: %d', sum)
-        }).on('shout', function (args) {
-            let allcaps = args.map(s => s.toUpperCase()).join(' ')
-            console.log(allcaps)
         }).on('BROKENurl', async function (args) {
             await page.goto('$(url.$(args))', { waitUntil: 'domcontentloaded' })
         }).on('login', async function (args) {
-            if (verbose) {group('login')}
-            try {
-                await page.waitForSelector(
-                    '.main-panel > .content > #login > form > .btn')
-                await page.click('.main-panel > .content > #login > form > .btn')
-            } catch (error) {console.log('Caught:', error.message)}
-            if (verbose) {groupend('login')}
+            await qv.login(browser, page)
         }).on('riverside', async function (args) {
-            if (verbose) {group('navtoriverside')}
-            await page.waitFor(1000)
-            await page.waitForSelector(
-                '.sidebar-wrapper > .nav > #menuProjects > a > p')
-            await page.click('.sidebar-wrapper > .nav > #menuProjects > a > p')
-
-            await page.hover(
-                'body > div.wrapper > div.sidePanel.ui-resizable > div.panelHeading')
-            await page.waitFor(1000)
-            await page.waitForSelector(
-                '.sidePanel > #panelInner > #projectList > .panelRow:nth-child(3) > .panelRowTxt2')
-            await page.click(
-                '.sidePanel > #panelInner > #projectList > .panelRow:nth-child(3) > .panelRowTxt2')
-            if (verbose) {groupend('navtoriverside')}
+            await qv.riverside(browser, page)
         }).on('setdate', async function (args) {
-            if (verbose) {group('set Date')}
-
-            function formatDate(date) {
-                let d = new Date(date),
-                    month = '' + (d.getMonth() + 1),
-                    day = '' + d.getDate(),
-                    year = d.getFullYear()
-                if (month.length < 2) month = '0' + month
-                if (day.length < 2) day = '0' + day
-                return [year, month, day].join('-')
-            }
-
-            global.date = formatDate(args)
-            await page.click('#sDateTxt')
-            await page.waitFor(5)
-            await page.keyboard.down('Control')
-            await page.keyboard.down('A')
-            await page.waitFor(5)
-            await page.keyboard.up('A')
-            await page.keyboard.up('Control')
-
-            await page.waitFor(1000)
-            await page.type('#sDateTxt', global.date)
-            console.log(global.date) //TODO:delete
-            await page.waitFor(1000)
-            await page.keyboard.press('Enter')
-            try {
-                const elements = await page.$x(
-                    '/html/body/div[1]/div[4]/div[2]/form/div/div[1]/div/div[1]/div/div[1]/div[1]/label')
-                await elements[0].click()
-            } catch (error) {console.log('Caught:', error.message)}
-            if (verbose) {groupend('set Date')}
+            await qv.setdate(browser, page)
         }).on('adddate', async function (args) {
-
-            if (verbose) {group('add date')}
-            await page.waitForSelector(
-                '#dateList1Container > #dateList1 > #dateList1Body > tr:nth-child(1) > .text-center')
-            await page.click(
-                '#dateList1Container > #dateList1 > #dateList1Body > tr:nth-child(1) > .text-center')
-            await page.waitFor(2000)
-
-            await page.waitForSelector(
-                '#link1 > .row > .col-sm > #moveRightBtn > .tim-icons')
-            await page.click(
-                '#link1 > .row > .col-sm > #moveRightBtn > .tim-icons')
-
-            await page.waitForSelector(
-                '#dialogDateSelector > #formInner37 #btnApply')
-            await page.click('#dialogDateSelector > #formInner37 #btnApply')
-            if (verbose) {groupend('add date')}
+            await qv.adddate(browser, page)
         }).on('clear', async function (args) {
             // clear default dates
-            await clearDates()
+            await clearDates(browser, page)
         }).on('displayDate', async function (args) {
-            let elements = await page.$x('/html/body/div[2]/div[8]/div[1]/span')
-            await elements[0].click()
+            await qv.displayDate(browser, page)
         }).on('graph', async function (args) {
-            if (verbose) {group('nav to graph')}
-            await page.waitFor(500)
-            await page.waitForSelector('#objects > img:nth-child(1)')
-            await page.click('#objects > img:nth-child(1)')
-            await page.waitForSelector('#viewGraphBtn')
-            await page.click('#viewGraphBtn')
-            if (verbose) {groupend('nav to graph')}
+            await qv.graph(browser, page)
         }).on('apply', async function (args) {
-            if (verbose) {group('select and apply new date')}
-            const elements = await page.$x(
-                '/html/body/div[1]/div[4]/div[2]/form/div/div[1]/div/div[1]/div/div[1]/div[3]/table/tbody/tr[1]/td[2]/div')
-            await elements[0].click()
-            await page.waitFor(500)
-
-            await page.waitForSelector('#moveRightBtn > i')
-            await page.waitFor(500)
-            await page.click('#moveRightBtn > i')
-
-            await page.waitFor(500)
-            await page.click('#btnApply')
-            if (verbose) {groupend('select and apply new date')}
+            await qv.apply(browser, page)
         }).on('fixcal', async function (args) {
-            try {
-                const elements = await page.$x(
-                    '/html/body/div[1]/div[4]/div[2]/form/div/div[1]/div/div[1]/div/div[1]/div[1]/label')
-                await elements[0].click()
-            } catch (error) {console.log('Caught:', error.message)}
+            await qv.fixCalender(browser, page)
         }).on('rawon', async function (args) {
             if (verbose) {group('rawMode')}
             process.stdin.setRawMode(true)
@@ -258,12 +164,12 @@ class Debug {
             if (verbose) {groupend('rawMode')}
             process.stdin.setRawMode(false)
         }).on('key_enter', async function (args) {
-            await page.keyboard.type(String.fromCharCode(13))
+            await qv.key_enter(browser, page)
         }).on('zoom', async function (args) {
             let sum = args.map(Number).reduce((a, b) => a + b, 0)
             await session.send('Emulation.setPageScaleFactor', { pageScaleFactor: sum })
-        }).on('key-esc', async function (args) {
-            await page.keyboard.type(String.fromCharCode(27))
+        }).on('key_esc', async function (args) {
+            await qv.key_esc(browser, page)
         }).on('togverb', async function (args) {
             global.verbose = !(global.verbose)
         }).on('screenshot', async function (args) {
@@ -274,32 +180,32 @@ class Debug {
             exec('.\\data\\Screenshots\\' + global.date + '.png', (err, stdout, stderr) => {
                 if (err) {console.error(err)} else {}
             })
-            }).on('mix', async function (args) {
-                await page.goto(url.mix, { waitUntil: 'domcontentloaded' })
-            }).on('qv', async function (args) {
-                await page.goto(url.qv, { waitUntil: 'domcontentloaded' })
-            }).on('vortex', async function (args) {
-                await page.goto(url.vortex, { waitUntil: 'domcontentloaded' })
-            }).on('capitol', async function (args) {
-                await page.goto(url.capitol, { waitUntil: 'domcontentloaded' })
-            }).on('audi', async function (args) {
-                await page.goto(url.audi, { waitUntil: 'domcontentloaded' })
-            }).on('facebook', async function (args) {
-                await page.goto(url.facebook, { waitUntil: 'domcontentloaded' })
-            }).on('dash', async function (args) {
-                await page.goto(url.dash, { waitUntil: 'domcontentloaded' })
-            }).on('dashui', async function (args) {
-                await page.goto(url.dashui, { waitUntil: 'domcontentloaded' })
-            }).on('console', async function (args) {
-                await page.goto(url.console, { waitUntil: 'domcontentloaded' })
-            }).on('certify', async function (args) {
-                await page.goto(url.certify, { waitUntil: 'domcontentloaded' })
-            }).on('darkmode', async function (args) {
-                await page.goto(url.darkmode, { waitUntil: 'domcontentloaded' })
-            }).on('sportal', async function (args) {
-                await page.goto(url.sportal, { waitUntil: 'domcontentloaded' })
-            }).on('google', async function (args) {
-                await page.goto(url.google, { waitUntil: 'domcontentloaded' })
-            })
-        )
+        }).on('mix', async function (args) {
+            await page.goto(url.mix, { waitUntil: 'domcontentloaded' })
+        }).on('qv', async function (args) {
+            await page.goto(url.qv, { waitUntil: 'domcontentloaded' })
+        }).on('vortex', async function (args) {
+            await page.goto(url.vortex, { waitUntil: 'domcontentloaded' })
+        }).on('capitol', async function (args) {
+            await page.goto(url.capitol, { waitUntil: 'domcontentloaded' })
+        }).on('audi', async function (args) {
+            await page.goto(url.audi, { waitUntil: 'domcontentloaded' })
+        }).on('facebook', async function (args) {
+            await page.goto(url.facebook, { waitUntil: 'domcontentloaded' })
+        }).on('dash', async function (args) {
+            await page.goto(url.dash, { waitUntil: 'domcontentloaded' })
+        }).on('dashui', async function (args) {
+            await page.goto(url.dashui, { waitUntil: 'domcontentloaded' })
+        }).on('console', async function (args) {
+            await page.goto(url.console, { waitUntil: 'domcontentloaded' })
+        }).on('certify', async function (args) {
+            await page.goto(url.certify, { waitUntil: 'domcontentloaded' })
+        }).on('darkmode', async function (args) {
+            await page.goto(url.darkmode, { waitUntil: 'domcontentloaded' })
+        }).on('sportal', async function (args) {
+            await page.goto(url.sportal, { waitUntil: 'domcontentloaded' })
+        }).on('google', async function (args) {
+            await page.goto(url.google, { waitUntil: 'domcontentloaded' })
+        }),
+    )
 })()

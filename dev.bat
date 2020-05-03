@@ -1,6 +1,5 @@
-"C:\Program Files\JetBrains\WebStorm\bin\webstorm64.exe" %CD%
-setx jobpath %CD%
-start
-exit
-REM pass window titles and where to put them to eg
-REM check for lcore, chrome, firefox
+setx jobname "timelapse"
+setx jobpath %%CD%%
+rem
+mosquitto_pub -q 1 -h %awsip% -p 1884 -u ubuntu -P %%pw%% -t "status" -m "jobname=:=timelapse"
+start "timelapse" cmd /k "color 80 & %%main%%\DOS\admin.cmd \"%%programfiles%%\\JetBrains\WebStorm\bin\webstorm64.exe\" %CD%"
