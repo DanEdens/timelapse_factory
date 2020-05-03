@@ -25,8 +25,9 @@ keyMap.set('f', 'find')
 // keyMap.set('x', 'null')
 // keyMap.set('y', 'null')
 // keyMap.set('z', 'null')
-export keyMap
-
+module.export = {
+    keymap: keyMap,
+}
 
 
 

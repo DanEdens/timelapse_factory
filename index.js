@@ -28,35 +28,6 @@ function verboselog(msg) {if (verbose) {Debug.print(msg)}}
 
 function performance() {if (global.performance) {console.log(new Date().toISOString())}}
 
-class Debug {
-    static async print(data, file) {
-        if (file) {} else {file = 'Log.txt'}
-        try {
-            if (debug === 0) {
-                file.write(data)
-            } else if (debug === 1) {
-                console.log(data)
-                file.write(data)
-            } else if (debug === 2) {
-                console.log(data)
-            } else if (debug === 3) {}
-        } catch (error) {console.log('Caught:', error.message)}
-    };
-
-    static async checkExists(file) {
-        let time = new Date().toISOString()
-        file.forEach(function (item) {
-            try {
-                fs.promises.access(item)
-            } catch (ENOENT) {
-                console.log('Created File at:\n' + item)
-                fs.writeFileSync(item, 'Created on: ' + time, { flag: 'w' },
-                    function (err) {if (err) throw err})
-            }
-        })
-    }
-}
-
 (async () => {
     if (preformance) {
         console.log(new Date().toISOString())
