@@ -1,15 +1,11 @@
 <component name="ProjectRunConfigurationManager">
-    <configuration default="false" name="Debug" type="NodeJSConfigurationType" node-parameters="node -r esm index"
-                   working-dir="$PROJECT_DIR$">
-        <output_file path="%tmp%/timelapse_run.log" is_save="true"/>
-        <envs pass-parent-envs="false">
-            <env name="jobpath"
-                 value="C:\Users\Dan.Edens\Desktop\Tree\the_lab\NodeJS\timelapse_factory;me=C:\Users\Dan.Edens\user"/>
-            <env name="logs" value="C:\Users\Dan.Edens\Desktop\Tree\the_vault\Logs;me=C:\Users\Dan.Edens\user"/>
-            <env name="userdata" value="C:\Users\Dan.Edens\AppData\Local\Google\Chrome\User Data"/>
-            <env name="awsip" value="3.134.3.199"/>
-            <env name="MOSQUITTO_DIR" value="C:\Program Files\mosquitto"/>
-        </envs>
-        <method v="2"/>
-    </configuration>
+  <configuration default="false" name="Debug" type="NodeJSConfigurationType" node-parameters="node -r esm index" working-dir="$PROJECT_DIR$">
+    <output_file path="%tmp%/timelapse_run.log" is_save="true" />
+    <envs pass-parent-envs="false">
+      <env name="chromeexe" value="&quot;C:\Program Files (x86)\Google\Chrome\Application\chrome.exe&quot;" />
+      <env name="jobpath" value="C:\Users\Dan.Edens\Desktop\Tree\the_lab\NodeJS\timelapse_factory;me=C:\Users\Dan.Edens\user" />
+      <env name="logs" value="C:\Users\Dan.Edens\Desktop\Tree\the_vault\Logs;me=C:\Users\Dan.Edens\user" />
+    </envs>
+    <method v="2" />
+  </configuration>
 </component>
