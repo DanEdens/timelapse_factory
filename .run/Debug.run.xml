@@ -7,7 +7,6 @@
                  value="C:\Users\Dan.Edens\Desktop\Tree\the_lab\NodeJS\timelapse_factory;me=C:\Users\Dan.Edens\user"/>
             <env name="logs" value="C:\Users\Dan.Edens\Desktop\Tree\the_vault\Logs;me=C:\Users\Dan.Edens\user"/>
             <env name="userdata" value="C:\Users\Dan.Edens\AppData\Local\Google\Chrome\User Data"/>
-            <env name="chromeexe" value="C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"/>
             <env name="awsip" value="3.134.3.199"/>
             <env name="MOSQUITTO_DIR" value="C:\Program Files\mosquitto"/>
         </envs>
