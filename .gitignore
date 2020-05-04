@@ -4,5 +4,5 @@ node_modules/
 user*
 ../message-card-template.json
 /user/
-
+**~
 data/Screenshots

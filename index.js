@@ -10,23 +10,22 @@ const puppeteer = require('puppeteer-extra')
 
 const argv = require('yargs').argv
 
-if (argv.debug) {global.debug = argv.debug} else {global.debug = 0} // -d
+global.debug = argv.debug
 global.verbose = argv.verbose
 global.preformance = argv.preformance
-global.date = '2019-08-26'
+if (argv.date) {global.date = argv.date} else {global.date = '2019-08-26'}
 
-function group(msg) {if (debug > '0') {console.group('Group: ' + msg)}}
-
-function groupend(msg) {
-    if (debug > '0') {
-        console.groupEnd()
-        console.log('G End: ' + msg + '\n')
-    }
+export function group(msg) {console.group('Group: ' + msg)}
 }
 
-function verboselog(msg) {if (verbose) {Debug.print(msg)}}
+export function groupend(msg) {
+    console.groupEnd()
+    console.log('G End: ' + msg + '\n')
+}
 
-function performance() {if (global.performance) {console.log(new Date().toISOString())}}
+export function verboselog(msg) {if (verbose) {Debug.print(msg)}}
+
+export function performance() {if (global.performance) {console.log(new Date().toISOString())}}
 
 (async () => {
     if (preformance) {
@@ -57,6 +56,7 @@ function performance() {if (global.performance) {console.log(new Date().toISOStr
     })
     const page = await browser.newPage()
     await page.setViewport({ width: 1900, deviceScaleFactor: 1, height: 1080 })
+
     await page.goto('https://quickview.geo-instruments.com/index.php',
         { waitUntil: 'domcontentloaded' })
     await page.setDefaultNavigationTimeout(0)
