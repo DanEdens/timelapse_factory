@@ -1,9 +1,8 @@
 import Repl from './lib/repl'
 import LineUnitizer from './lib/line-unitizer'
-import * as input from './lib/input'
-import * as qv from './lib/qv'
 import * as text from './lib/text'
 import * as url from './lib/preseturls'
+import * from './lib/qv'
 
 const Promise = require('bluebird')
 const puppeteer = require('puppeteer-extra')
@@ -15,39 +14,32 @@ global.verbose = argv.verbose
 global.preformance = argv.preformance
 global.date = '2019-08-26'
 
-function group(msg) {if (debug > '0') {console.group('Group: ' + msg)}}
+export function group(msg) {if (debug > '0') {console.group('Group: ' + msg)}}
 
-function groupend(msg) {
+export function groupend(msg) {
     if (debug > '0') {
         console.groupEnd()
         console.log('G End: ' + msg + '\n')
     }
 }
 
-function verboselog(msg) {if (verbose) {Debug.print(msg)}}
+export function verboselog(msg) {if (global.verbose) {Debug.print(msg)}}
 
-function performance() {if (global.performance) {console.log(new Date().toISOString())}}
+export function performance() {}
 
 (async () => {
-    if (preformance) {
-        console.log(new Date().toISOString())
-    }
-
-    const userdata = process.env.userdata
-    const chromeexe = 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'
-    // if (!x) {let x = 50}
-    // if (!y) {let y = 50}
-
+    let runtime = new Date().toISOString()
+    if (global.performance || global.verbose) {console.log(runtime)}
+    // if (!x) {let x = 50} if (!y) {let y = 50}
     let wargs = puppeteer.defaultArgs()
     wargs.push('--no-sandbox')
     wargs.push('--no-sync')
-    // wargs.push('--executablePath: ' + chromeexe);
     wargs.push('--start-fullscreen')
     wargs.push('--new-window')
     let browser = await puppeteer.launch({
-        userDataDir: userdata,
+        userDataDir: process.env.userdata,
         // windowPosition: '${x},${y}',
-        executablePath: chromeexe,
+        executablePath: process.env.chromeexe,
         ignoreDefaultArgs: [
             '--headless',
             '--password-store=basic',
@@ -70,39 +62,16 @@ function performance() {if (global.performance) {console.log(new Date().toISOStr
     })
 
     group('Main - REPL')
-
-    if (verbose) {console.log('Window Dimensions:', dimensions)}
+    if (global.verbose) {console.log('Window Dimensions:', dimensions)}
     console.log('Interactive Browser session initiated:\n')
-
-    async function clearDates() {
-        if (verbose) {group('clear old dates')}
-        await page.waitForSelector(
-            '#formInner0 > div.graphButtons > div > div:nth-child(1)')
-        await page.click(
-            '#formInner0 > .graphButtons > div > .graphButton:nth-child(1)')
-
-        await page.waitFor(2000)
-        await page.waitForSelector('form #list2 #selectAllBtn')
-        await page.click('form #list2 #selectAllBtn')
-
-        await page.waitFor(1000)
-        await page.waitForSelector('form #deleteBtn')
-        await page.click('form #deleteBtn')
-
-        await page.waitFor(1000)
-        const elements = await page.$x(
-            '/html/body/div[1]/div[5]/div[2]/form/div/div/button[2]')
-        await elements[0].click()
-        if (verbose) {groupend('clear old dates')}
-    }
 
     process.stdin.pipe(new LineUnitizer()).pipe(new Repl()
         .on('exit', function (args) {
-            if (verbose) {group('exitmsg')}
+            group('exitmsg')
             console.log('\n' + text.exitmessage)
             groupend('Main - REPL')
-            performance()
-            if (verbose) {groupend('exitmsg')}
+            if (global.performance) {console.log(new Date().toISOString())}
+            groupend('exitmsg')
             process.exit()
         }).on('add', function (args) {
             let sum = args.map(Number).reduce((a, b) => a + b, 0)
@@ -110,35 +79,36 @@ function performance() {if (global.performance) {console.log(new Date().toISOStr
         }).on('BROKENurl', async function (args) {
             await page.goto('$(url.$(args))', { waitUntil: 'domcontentloaded' })
         }).on('login', async function (args) {
-            await qv.login(browser, page)
+            await login(browser, page)
         }).on('riverside', async function (args) {
-            await qv.riverside(browser, page)
+            await riverside(browser, page)
         }).on('setdate', async function (args) {
-            await qv.setdate(browser, page)
+            await setdate(browser, page, args)
         }).on('adddate', async function (args) {
-            await qv.adddate(browser, page)
-        }).on('clear', async function (args) {
-            // clear default dates
+            await adddate(browser, page)
+        }).on('clear', async function () {
             await clearDates(browser, page)
-        }).on('displayDate', async function (args) {
-            await qv.displayDate(browser, page)
-        }).on('graph', async function (args) {
-            await qv.graph(browser, page)
-        }).on('apply', async function (args) {
-            await qv.apply(browser, page)
-        }).on('fixcal', async function (args) {
-            await qv.fixCalender(browser, page)
-        }).on('rawon', async function (args) {
-            await input.rawon()
-        }).on('rawoff', async function (args) {
-            await input.rawOff()
-        }).on('key_enter', async function (args) {
-            await qv.key_enter(browser, page)
+        }).on('displayDate', async function () {
+            await displayDate(browser, page)
+        }).on('graph', async function () {
+            await graph(browser, page)
+        }).on('apply', async function () {
+            await apply(browser, page)
+        }).on('fixcal', async function () {
+            await fixCalender(browser, page)
+        }).on('raw_', async function () {
+            await rawSession(browser, page)
+        }).on('rawon', async function () {
+            await rawOn()
+        }).on('rawoff', async function () {
+            await rawOff()
+        }).on('key_enter', async function () {
+            await key_enter(browser, page)
         }).on('zoom', async function (args) {
             let sum = args.map(Number).reduce((a, b) => a + b, 0)
             await session.send('Emulation.setPageScaleFactor', { pageScaleFactor: sum })
         }).on('key_esc', async function (args) {
-            await qv.key_esc(browser, page)
+            await key_esc(browser, page)
         }).on('togverb', async function (args) {
             global.verbose = !(global.verbose)
         }).on('screenshot', async function (args) {
@@ -178,3 +148,6 @@ function performance() {if (global.performance) {console.log(new Date().toISOStr
         }),
     )
 })()
+
+
+
