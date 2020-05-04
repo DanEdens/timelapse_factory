@@ -26,8 +26,9 @@
     "yargs": "15.3.1"
   },
   "devDependencies": {
-    "puppeteer-extra": "3.1.9",
     "async-mqtt": "2.5.0",
+    "beautifyjs": "0.0.1",
+    "puppeteer-extra": "3.1.9",
     "puppeteer-extra-plugin-adblocker": "2.11.3",
     "puppeteer-extra-plugin-stealth": "2.4.9",
     "sprintf": "0.1.5",

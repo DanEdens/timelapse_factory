@@ -1,3 +1,14 @@
+var getDaysArray = function(start, end) {
+    for(var arr=[],dt=new Date(start); dt<=end; dt.setDate(dt.getDate()+1)){
+        arr.push(new Date(dt));
+    }
+    return arr;
+};
+List dates in between:
+
+var daylist = getDaysArray(new Date("2018-05-01"),new Date("2018-07-01"));
+daylist.map((v)=>v.toISOString().slice(0,10)).join("")
+
 .on("raw", function (args) {
                     let raw_mode;
 		                        if (raw_mode){
